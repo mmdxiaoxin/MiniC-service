@@ -1,0 +1,15 @@
+int main()
+{
+    int c,d;
+	
+	do
+	{
+		c=c+a;
+		while(a<b){c=d;}
+	}
+	while(a<b);
+	
+	int c,d;
+	
+	return 0;
+}

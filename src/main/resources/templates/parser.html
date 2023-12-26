@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Analyzer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        #editor-container {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            overflow: hidden;
+        }
+
+        #editor {
+            width: 100%;
+            height: calc(100% - 40px);
+            font-size: 16px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            resize: none;
+            border-radius: 8px;
+        }
+
+        #analyze-button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            border-radius: 8px;
+        }
+
+        #analyze-button:hover {
+            background-color: #45a049;
+        }
+
+        #results-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .result-section {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            overflow: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            white-space: pre-wrap; /* 保留空格和换行 */
+        }
+
+        h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div id="editor-container">
+    <textarea id="editor" placeholder="在这里输入代码..."></textarea>
+    <button id="analyze-button" onclick="sendCode()">Analyze Code</button>
+</div>
+<div id="results-container">
+    <div class="result-section" id="lexical-results">
+        <h2>词法分析</h2>
+    </div>
+    <div class="result-section" id="syntax-results">
+        <h2>语法分析</h2>
+    </div>
+    <div class="result-section" id="semantic-results">
+        <h2>语义分析</h2>
+    </div>
+</div>
+<script>
+    function sendCode() {
+        const code = document.getElementById("editor").value;
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/processing", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.log("Code sent successfully");
+                    handleResponse(xhr.responseText);
+                } else {
+                    console.error("Failed to send code. Status code: " + xhr.status);
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify({ code: code }));
+    }
+
+    function handleResponse(response) {
+        const resultsContainer = document.getElementById("results-container");
+        const lexicalResults = document.getElementById("lexical-results");
+        const syntaxResults = document.getElementById("syntax-results");
+        const semanticResults = document.getElementById("semantic-results");
+
+        const results = JSON.parse(response);
+
+        lexicalResults.innerHTML = "<h2>词法分析:</h2>" + results.lexicalAnalysis;
+
+        syntaxResults.innerHTML = "<h2>语法分析:</h2>" + results.syntaxAnalysis;
+
+        semanticResults.innerHTML = "<h2>语义分析:</h2>" + results.semanticAnalysis;
+    }
+</script>
+
+</body>
+</html>

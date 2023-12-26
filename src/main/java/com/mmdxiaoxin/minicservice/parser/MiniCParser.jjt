@@ -1,0 +1,895 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */
+options
+{
+  STATIC = false;
+}
+
+PARSER_BEGIN(MiniCParser)
+package parser;
+import util.*;
+import java.io.*;
+import java.util.Scanner;
+
+public class MiniCParser{
+
+  public QTList qtList = new QTList();
+  public StatementType statementType = new StatementType();
+  public VariableTable variableTable = new VariableTable();
+  public void printQTTable(char [] buffer, FileWriter fos) {
+    qtList.printQTTable(buffer, fos);
+  }
+  public Map<String, String> processing(String code) {
+  Map<String, String> result = new HashMap<>();
+  InputStream inputStream = new ByteArrayInputStream(code.getBytes());
+  InputStream inputStream1 = new ByteArrayInputStream(code.getBytes());
+  try {
+        MiniCParser parser = new MiniCParser(inputStream);
+        StringBuilder lexicalResult = new StringBuilder();
+        StringBuilder syntaxResult = new StringBuilder();
+        StringBuilder semanticResult = new StringBuilder();
+        // 词法分析
+        SimpleCharStream stream = new SimpleCharStream(inputStream1);
+        MiniCParserTokenManager tokenManager  = new MiniCParserTokenManager(stream);
+        Token token = tokenManager.getNextToken();
+        while (token.kind != 0) {
+            lexicalResult.append("(").append(token.kind).append(", ").append(token.image).append(")\n");
+            token = tokenManager.getNextToken();
+        }
+        result.put("lexicalAnalysis", lexicalResult.toString());
+
+        // 语法分析
+        SimpleNode n = parser.Start();
+        syntaxResult.append(n.dump("->"));
+        result.put("syntaxAnalysis", syntaxStream.toString());
+        // 语义分析
+        parser.printQTTable();
+        result.put("semanticAnalysis", semanticStream.toString());
+
+        return result;
+      }
+      catch (Exception e) {
+        System.out.println("Oops.");
+        System.out.println(e.getMessage());
+      }
+  }
+  public static void main(String args []) {
+    try {
+      //输入文件ID
+      Scanner scanner = new Scanner(System.in);
+
+      System.out.print("Enter input file nameID (input*.txt): ");
+      String inputFileID = scanner.nextLine();
+
+      FileReader reader = new FileReader("input" + inputFileID + ".txt");
+      FileReader reader1 = new FileReader("input" + inputFileID + ".txt");
+      File outFile = new File("output" + inputFileID + ".txt");
+      FileWriter fos = new FileWriter(outFile);
+      char [] buffer = new char [1000];
+      MiniCParser parser = new MiniCParser(reader);
+
+	  // 词法分析
+      Token token = null;
+      SimpleCharStream stream = new SimpleCharStream(reader1);
+      MiniCParserTokenManager tokenManager  = new MiniCParserTokenManager(stream);
+      token = tokenManager .getNextToken();
+      System.out.println("词法分析:\n");
+      String st = new String("词法分析:\n");
+      buffer = st.toCharArray();
+      fos.write(buffer); // 写入文件
+
+      while (token.kind != 0) {
+        System.out.println("(" + token.kind + ", " + token.image + ")");
+        st = new String("( " + token.kind + "," + token.image + " )" + "\n");
+        buffer = st.toCharArray();
+        fos.write(buffer);
+        token = tokenManager .getNextToken();
+      }
+      System.out.println("\n");
+
+      // 语法分析
+      System.out.println("语法分析: ");
+      st = new String("\n语法分析:\n");
+      buffer = st.toCharArray();
+      fos.write(buffer); // 写入文件
+
+      SimpleNode n = parser.Start();
+      n.dump("", buffer, fos);
+      st = new String("Thank you.\n\n");
+      buffer = st.toCharArray();
+      fos.write(buffer); // 写入文件
+      System.out.println("Thank you.");
+      System.out.println("\n");
+
+      // 语义分析
+      System.out.println("语义分析: \n");
+      st = new String("语义分析: \n");
+      buffer = st.toCharArray();
+      fos.write(buffer); // 写入文件
+      parser.printQTTable(buffer, fos);
+
+      // 关闭并保存文件
+      fos.close();
+    }
+    catch (Exception e) {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+    }
+  }
+}
+
+PARSER_END(MiniCParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+| < "//" (~[ "\n", "\r" ])*
+    (
+      "\n"
+    | "\r"
+    | "\r\n"
+    ) >
+| < "/*" (~[ "*" ])* "*"
+    (
+      "*"
+    | ~[ "*", "/" ] (~[ "*" ])* "*"
+    )*
+    "/" >
+}
+
+TOKEN : /* 特殊常量 */
+{
+  < INTEGER_LITERAL :
+    < DECIMAL_LITERAL > ([ "l", "L" ])?
+  | < HEX_LITERAL > ([ "l", "L" ])?
+  | < OCTAL_LITERAL > ([ "l", "L" ])? >
+| < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
+| < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
+| < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
+| < FLOATING_POINT_LITERAL :
+    ([ "0"-"9" ])+ "." ([ "0"-"9" ])* (< EXPONENT >)? ([ "f", "F", "d", "D" ])?
+  | "." ([ "0"-"9" ])+ (< EXPONENT >)? ([ "f", "F", "d", "D" ])?
+  | ([ "0"-"9" ])+ < EXPONENT > ([ "f", "F", "d", "D" ])?
+  | ([ "0"-"9" ])+ (< EXPONENT >)? [ "f", "F", "d", "D" ] >
+| < #EXPONENT : [ "e", "E" ] ([ "+", "-" ])? ([ "0"-"9" ])+ >
+| < CHARACTER_LITERAL :
+    "\'"
+    (
+      ~[ "\'", "\\", "\n", "\r" ]
+    | "\\"
+      (
+        [ "n", "t", "b", "r", "f", "\\", "\'", "\"" ]
+      | [ "0"-"7" ] ([ "0"-"7" ])?
+      | [ "0"-"3" ] [ "0"-"7" ] [ "0"-"7" ]
+      )
+    )
+    "\'" >
+| < STRING_LITERAL :
+    "\""
+    (
+      ~[ "\"", "\\", "\n", "\r" ]
+    | "\\"
+      (
+        [ "n", "t", "b", "r", "f", "\\", "\'", "\"" ]
+      | [ "0"-"7" ] ([ "0"-"7" ])?
+      | [ "0"-"3" ] [ "0"-"7" ] [ "0"-"7" ]
+      |
+        (
+          [ "\n", "\r" ]
+        | "\r\n"
+        )
+      )
+    )*
+    "\"" >
+}
+
+TOKEN : /* 关键字 (KEYWORDS) */
+{
+    < WHILE : "while" >
+| < IF : "if" >
+| < ELSE : "else" >
+| < INT : "int" >
+| < RETURN : "return" >
+| < VOID : "void" >
+| < MAIN : "main" >
+| < FOR : "for" >
+| < DO : "do" >
+| < SWITCH : "switch" >
+| < CASE : "case" >
+| < BREAK : "break" >
+| < CONTINUE : "continue" >
+| < GOTO : "goto" >
+| < SIZEOF : "sizeof" >
+| < TYPEDEF : "typedef" >
+| < STRUCT : "struct" >
+| < UNION : "union" >
+| < ENUM : "enum" >
+| < REGISTER : "register" >
+| < AUTO : "auto" >
+| < EXTERN : "extern" >
+| < STATIC : "static" >
+| < CONST : "const" >
+| < VOLATILE : "volatile" >
+| < SIGNED : "signed" >
+| < UNSIGNED : "unsigned" >
+| < SHORT : "short" >
+| < LONG : "long" >
+| < FLOAT : "float" >
+| < DOUBLE : "double" >
+| < CHAR : "char" >
+| < DFLT : "default" >
+}
+
+TOKEN : /* 字符常量 */
+{
+  < #_NUM_CHAR : [ "0"-"9" ] >
+| < #_ESCAPED_CHAR : "\\" ~[ ] >
+| < #_TERM_START_CHAR :
+    (
+      ~[ " ", "\t", "\n", "\r", "+", "-", "!", "(", ")", ":", "^",
+      "[", "]", "\"", "{", "}", "~", "*", "?", "\\" ]
+    | < _ESCAPED_CHAR >
+    ) >
+| < #_TERM_CHAR :
+    (
+      < _TERM_START_CHAR >
+    | < _ESCAPED_CHAR >
+    | "-"
+    | "+"
+    ) >
+| < #_WHITESPACE :
+    (
+      " "
+    | "\t"
+    | "\n"
+    | "\r"
+    ) >
+}
+
+TOKEN : /* 运算符 (OPERATORS) */
+{
+  < ADD : "+" >
+| < SUBTRACT : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+| < MODULO : "%" >
+| < ASSIGN : "=" >
+| < PLUS_ASSIGN : "+=" >
+| < MINUS_ASSIGN : "-=" >
+| < MUL_ASSIGN : "*=" >
+| < DIV_ASSIGN : "/=" >
+| < MOD_ASSIGN : "%=" >
+| < LESS_THAN : "<" >
+| < LESS_THAN_EQUAL : "<=" >
+| < GREATER_THAN : ">" >
+| < GREATER_THAN_EQUAL : ">=" >
+| < NOT_EQUAL : "!=" >
+| < OR : "||" >
+| < AND : "&&" >
+}
+
+TOKEN : /* 分隔符 (SEPARATORS) */
+{
+  < SEMICOLON  : ";" >
+| < COMMA : "," >
+| < COLON : ":" >
+| < LEFT_PAREN: "(" >
+| < RIGHT_PAREN : ")" >
+| < RIGHT_BRACE : "}" >
+| < LEFT_BRACE  : "{" >
+| < LEFT_BRACKET : "[" >
+| < RIGHT_BRACKET : "]" >
+| < HASH : "#" >
+| < EXCLAMATION : "!" >
+| < AMPERSAND : "&" >
+| < PIPE : "|" >
+| < DOT : "." >
+}
+
+TOKEN : /* 标识符 (IDENTIFIERS) */
+{
+  < IDENTIFIER :
+    < LETTER >
+    (
+      < LETTER >
+    | < DIGIT >
+    )* >
+| < #LETTER : [ "_", "a"-"z", "A"-"Z" ] >
+| < #DIGIT : [ "0"-"9" ] >
+}
+
+SimpleNode Start() :
+{}
+{
+  parseProgram()
+  {
+    return jjtThis;
+  }
+}
+
+void parseProgram() :
+{}
+{
+  parseTypeSpecifier() < MAIN > "(" ")" "{"
+  (
+    parseSentenceBlock()
+  )*
+  "}"
+}
+
+String parseTypeSpecifier() :
+{
+  Token token = null;
+}
+{
+  token = < INT >
+  {
+    return token.image;
+  }
+| token = < DOUBLE >
+  {
+    return token.image;
+  }
+| token = < VOID >
+  {
+    return token.image;
+  }
+| token = < FLOAT >
+  {
+    return token.image;
+  }
+| token = < CHAR >
+  {
+    return token.image;
+  }
+| token = < LONG >
+  {
+    return token.image;
+  }
+| token = < SHORT >
+  {
+    return token.image;
+  }
+}
+
+void parseSentenceBlock() :
+{}
+{
+  parseSentence()
+| "{"
+  (
+    parseSentenceBlock()
+  )*
+  "}"
+}
+
+void parseSentence() :
+{}
+{
+  parseSequenceSentence()
+| parseConditionSentence()
+| parseWhileSentence()
+| parseDoWhile()
+| parseSwitchSentence()
+| parseForSentence()
+}
+
+void parseSequenceSentence() :
+{}
+{
+  parseStatementSentence() ";"
+| parseAssignmentSentence() ";"
+| parseReturnSentence() ";"
+}
+
+void parseReturnSentence() :
+{}
+{
+  < RETURN > parseExpression()
+}
+
+// 变量重复声明
+void parseStatementSentence() :
+{
+  Token identifierToken = null;
+  Variable variableEntry = new Variable();
+  String ty = null;
+}
+{
+  ty = parseTypeSpecifier()
+  identifierToken = parseIdentifier()
+  {
+    variableEntry = new Variable(ty, identifierToken);
+    variableTable.addWithCheck(variableEntry);
+    statementType.setVariableTable(variableTable);
+  }
+  (
+    < COMMA >
+    identifierToken = parseIdentifier()
+    {
+      variableEntry = new Variable(ty, identifierToken);
+      variableTable.addWithCheck(variableEntry);
+      statementType.setVariableTable(variableTable);
+    }
+  )*
+}
+
+void parseAssignmentSentence() :
+{
+  String str1 = null;
+  String str2 = null;
+  Token assignmentOperator, identifierToken;
+  Variable variableEntry = new Variable();
+}
+{
+  identifierToken = parseIdentifier()
+  {
+    str1 = identifierToken.image;
+  }
+  {
+    variableEntry = variableTable.variableExist(str1);
+    if (variableEntry == null)
+    {
+      System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
+    }
+  }
+  assignmentOperator = "="
+  str2 = parseExpression()
+  {
+    QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
+    qtList.addQTInfo(qt);
+  }
+}
+
+void parseAssignmentSentence2() :
+{
+  String str2 = null;
+  String str1 = null;
+  Token assignmentOperator, identifierToken;
+  Variable variableEntry = new Variable();
+}
+{
+  identifierToken = parseIdentifier()
+  {
+    str1 = identifierToken.image;
+  }
+  {
+    variableEntry = variableTable.variableExist(str1);
+    if (variableEntry == null)
+    {
+      System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
+    }
+  }
+  assignmentOperator = "="
+  str2 = parseExpression()
+  {
+    QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
+    qtList.addQTInfo(qt);
+  }
+}
+
+void parseConditionSentence() :
+{
+  ConditionValue cValue = new ConditionValue();
+  int index;
+}
+{
+  < IF > "(" cValue = parseCondition() ")"
+  {
+    cValue.backpatchTrueChain(QTInfo.size + 1);
+  }
+  parseSentenceBlock()
+  {
+    cValue.backpatchFalseChain(QTInfo.size + 1);
+  }
+  (
+    LOOKAHEAD(1)
+    < ELSE >
+    {
+      QTInfo qtInfo = new QTInfo("j", "_", "_", "F");
+      index = QTInfo.size;
+      qtList.addQTInfo(qtInfo);
+      cValue.backpatchFalseChain(QTInfo.size + 1);
+    }
+    parseSentenceBlock()
+    {
+      qtInfo = qtList.get(index - 1);
+      qtInfo.setResult(QTInfo.size + 1);
+    }
+  )?
+}
+
+void parseWhileSentence() :
+{
+  ConditionValue cValue = new ConditionValue();
+  int index;
+}
+{
+  < WHILE > "("
+  {
+    index = QTInfo.size + 1;
+  }
+  cValue = parseCondition() ")"
+  {
+    cValue.backpatchTrueChain(QTInfo.size + 1);
+  }
+  parseSentenceBlock()
+  {
+    QTInfo qtInfo = new QTInfo("j", "_", "_", index);
+    qtList.addQTInfo(qtInfo);
+    cValue.backpatchFalseChain(QTInfo.size + 1);
+  }
+}
+
+ConditionValue parseCondition() :
+{
+  String e1 = null;
+  String e2 = null;
+  Token r = null;
+  ConditionValue cValue = new ConditionValue();
+}
+{
+  (
+    e1 = parseExpression()
+  )?
+  (
+    r = parseRop() e2 = parseExpression()
+  )?
+  {
+    if (r == null || e1 == null)
+    {
+      if (e1 == null)
+      {
+        QTInfo qtInfo = new QTInfo("jnz", "_", "_", "T");
+        qtList.addQTInfo(qtInfo);
+        cValue.mergeTrue(qtInfo);
+      }
+      else
+      {
+        QTInfo qtInfo = new QTInfo("jnz", e1, "_", "T");
+        qtList.addQTInfo(qtInfo);
+        cValue.mergeTrue(qtInfo);
+      }
+    }
+    else
+    {
+      QTInfo qtInfo = new QTInfo("j" + r.image, e1, e2, "T");
+      qtList.addQTInfo(qtInfo);
+      cValue.mergeTrue(qtInfo);
+    }
+    QTInfo qtInfo = new QTInfo("j", "_", "_", "F");
+    qtList.addQTInfo(qtInfo);
+    cValue.mergeFalse(qtInfo);
+  }
+  {
+    return cValue;
+  }
+}
+
+Token parseRop() :
+{
+  Token token = null;
+}
+{
+  token = < LESS_THAN >
+  {
+    return token;
+  }
+| token = < LESS_THAN_EQUAL >
+  {
+    return token;
+  }
+| token = < GREATER_THAN >
+  {
+    return token;
+  }
+| token = < GREATER_THAN_EQUAL >
+  {
+    return token;
+  }
+}
+
+String parseExpression() :
+{
+  String s = null;
+}
+{
+  s = parseAdditiveExpression()
+  {
+    return s;
+  }
+}
+
+String parseAdditiveExpression() :
+{
+  String a = null;
+  String b = null;
+  String result = null;
+  Token token = null;
+}
+{
+  a = parseMultiplicativeExpression()
+  {
+    result = a;
+  }
+  (
+    (
+      token = "+"
+    | token = "-"
+    )
+    b = parseMultiplicativeExpression()
+    {
+      result = VariableNameGenerator.genVariableName();
+      QTInfo qtInfo = new QTInfo(token.image, a, b, result);
+      qtList.addQTInfo(qtInfo);
+      a = result;
+    }
+  )*
+  {
+    return result;
+  }
+}
+
+String parseMultiplicativeExpression() :
+{
+  String a = null;
+  String b = null;
+  String result = null;
+  Token token = null;
+}
+{
+  a = parseUnaryExpression()
+  {
+    result = a;
+  }
+  (
+    (
+      token = "*"
+    | token = "/"
+    | token = "%"
+    )
+    b = parseUnaryExpression()
+    {
+      result = VariableNameGenerator.genVariableName();
+      QTInfo qtInfo = new QTInfo(token.image, a, b, result);
+      qtList.addQTInfo(qtInfo);
+      a = result;
+    }
+  )*
+  {
+    return result;
+  }
+}
+
+String parseUnaryExpression() :
+{
+  String str = null;
+  Token identifierToken = null;
+  Variable variableEntry = new Variable();
+}
+{
+  (
+    "(" str = parseExpression() ")"
+  | identifierToken = parseIdentifier()
+    {
+      str = identifierToken.image;
+      variableEntry = variableTable.variableExist(str);
+      if (variableEntry == null)
+      {
+        System.out.println("\u53d8\u91cf" + str + "\u672a\u5b9a\u4e49");
+      }
+    }
+  | str = parseInteger()
+  )
+  {
+    return str;
+  }
+}
+
+Token parseIdentifier() :
+{
+  Token token = null;
+}
+{
+  token = < IDENTIFIER >
+  {
+    return token;
+  }
+}
+
+String parseInteger() :
+{
+  Token token = null;
+}
+{
+  token = < INTEGER_LITERAL >
+  {
+    return token.image;
+  }
+}
+
+ConditionValue parseBooler() :
+{
+  ConditionValue Value = new ConditionValue();
+  String str1 = null, str2 = null;
+  Token assignmentOperator = null;
+  Token op1 = null;
+  ConditionValue Value2 = new ConditionValue();
+  ConditionValue Valuet = new ConditionValue();
+  int qtSize = QTInfo.size;
+  QTInfo qt1;
+  QTInfo qt2;
+}
+{
+  str1 = parseExpression()
+  (
+    assignmentOperator = parseRop() str2 = parseExpression()
+  )?
+  {
+    if (assignmentOperator != null)
+    {
+      qt1 = new QTInfo("J" + assignmentOperator.image, str1, str2, QTInfo.size + 3);
+      qtList.addQTInfo(qt1);
+    }
+    else
+    {
+      qt1 = new QTInfo("Jnz", str1, "_", QTInfo.size + 3);
+      qtList.addQTInfo(qt1);
+    }
+    qt2 = new QTInfo("J", "_", "_", "F");
+    qtList.addQTInfo(qt2);
+    Value.mergeFalse(qt2);
+  }
+  (
+    (
+      op1 = < AND >
+      {
+        Valuet = new ConditionValue();
+        Valuet.mergeFalse(qt2);
+        Value.backpatchTrueChain(QTInfo.size + 1);
+      }
+    |
+      (
+        op1 = < OR >
+        {
+          Valuet.mergeFalse(qt2);
+          Valuet.backpatchFalseChain(QTInfo.size + 1);
+          Value.backpatchFalseChain(QTInfo.size + 1);
+        }
+      )
+    )
+    Value2 = parseBooler()
+    {
+      if (op1.image.equals("&&"))
+      {
+        Value2.mergeFalse(qt2);
+        Value2.backpatchFalseChain(QTInfo.size + 1);
+      }
+      if (op1.image.equals("||"))
+      {
+        Value2.mergeTrue(qt1);
+        Value2.backpatchTrueChain(QTInfo.size + 1);
+      }
+      return Value2;
+    }
+  )?
+  {
+    return Value;
+  }
+}
+
+void parseSwitchSentence() :
+{
+  ConditionValue Value = new ConditionValue();
+  String str1 = null;
+  String str2 = null;
+  int qtSize = QTInfo.size;
+  Token tok;
+  Token tokx;
+}
+{
+  < SWITCH >
+  < LEFT_PAREN >
+  tok = parseIdentifier()
+  < RIGHT_PAREN >
+  < LEFT_BRACE  >
+  (
+    < CASE >
+    tokx = < INTEGER_LITERAL >
+    {
+      QTInfo qt1;
+      if (tokx != null)
+      {
+        qt1 = new QTInfo("case", tok.image, tokx.image, QTInfo.size + 3);
+        qtList.addQTInfo(qt1);
+        Value.backpatchFalseChain(QTInfo.size);
+        Value = new ConditionValue();
+      }
+      else
+      {
+        qt1 = new QTInfo("Jnz", tok.image, "_", QTInfo.size + 3);
+        qtList.addQTInfo(qt1);
+      }
+      QTInfo qt2 = new QTInfo("J", "_", "_", "F");
+      qtList.addQTInfo(qt2);
+      Value.mergeFalse(qt2);
+      Value.backpatchFalseChain(QTInfo.size + 2);
+    }
+    < COLON >
+    (
+      parseSentenceBlock()
+    )*
+    < BREAK >
+    < SEMICOLON  >
+  )*
+  [
+    < DFLT > < COLON >
+    [ parseSentenceBlock() ]
+    < BREAK >
+    < SEMICOLON  >
+  ]
+  < RIGHT_BRACE >
+}
+
+void parseDoWhile() :
+{
+  int QTSize = QTInfo.size;
+  ConditionValue Value = null;
+  String str1 = null;
+  String str2 = null;
+  Token assignmentOperator = null;
+}
+{
+  < DO >
+  (
+    parseSentenceBlock()
+  )
+  < WHILE >
+  < LEFT_PAREN >
+  Value = parseBooler()
+  < RIGHT_PAREN >
+  < SEMICOLON  >
+  {
+    Value.backpatchTrueChain(QTSize + 1);
+  }
+  {
+    Value.backpatchFalseChain(QTInfo.size + 1);
+  }
+}
+
+void parseForSentence() :
+{
+  ConditionValue cValue = new ConditionValue();
+  int index;
+}
+{
+  < FOR > "("
+  {
+    index = QTInfo.size + 1;
+  }
+  (
+    parseStatementSentence()
+  | parseAssignmentSentence2()
+  )?
+  < SEMICOLON  >
+  cValue = parseCondition()
+  < SEMICOLON  >
+  (
+    parseAssignmentSentence2()
+  )*
+  ")"
+  {
+    cValue.backpatchTrueChain(QTInfo.size + 1);
+  }
+  parseSentenceBlock()
+  {
+    QTInfo qtInfo = new QTInfo("j", "_", "_", index);
+    qtList.addQTInfo(qtInfo);
+    cValue.backpatchFalseChain(QTInfo.size + 1);
+  }
+}
+
