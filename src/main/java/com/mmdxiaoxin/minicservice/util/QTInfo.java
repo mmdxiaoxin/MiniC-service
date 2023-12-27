@@ -3,9 +3,9 @@ package com.mmdxiaoxin.minicservice.util;
 //������Ԫʽ����Ϣ
 public class QTInfo {
 	public static int START = 0;
-	public static int innerIdSeqen = START; // ��Ԫʽȫ�ָ���
-	public static int size = 0; // ��Ԫʽȫ�ָ���
-	private int innerId; // ��ǰ��ԪʽID
+	public static int innerIdSeqen = START;
+	public static int size = 0;
+	private int innerId;
 	private String operator;
 	private String arg1;
 	private String arg2;
@@ -49,8 +49,7 @@ public class QTInfo {
 	}
 
 	public String toString() {
-		// TODO Auto-generated method stub
-		return this.innerId + ":\t(" + this.operator + ",\t" + this.arg1
-				+ ",\t" + this.arg2 + ",\t" + this.result + ")\n";
+		String formattedString = "%-3d: (%-10s, %-10s, %-10s, %-10s)%n";
+		return String.format(formattedString, this.innerId, this.operator, this.arg1, this.arg2, this.result);
 	}
 }
