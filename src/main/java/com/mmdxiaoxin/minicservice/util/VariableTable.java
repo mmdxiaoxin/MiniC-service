@@ -11,7 +11,7 @@ public class VariableTable {
 
 	public void addWithCheck(Variable variable) {
 		if (variableList.contains(variable)) {  // api ����
-			System.out.println("���������ظ����壡 " + variable.getName()+ " [" +
+			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName()+ " [" +
 		             variable.getLine() + "," + variable.getColumn() + "]");
 		} else {
 			variableList.add(variable);
