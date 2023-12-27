@@ -1,6 +1,7 @@
 package com.mmdxiaoxin.minicservice.service;
 
 import com.mmdxiaoxin.minicservice.parser.*;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@Scope("prototype")
 public class MiniCService {
 
     public Map<String, String> processing(String code) {
