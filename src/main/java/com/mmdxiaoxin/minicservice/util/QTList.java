@@ -1,64 +1,57 @@
 package com.mmdxiaoxin.minicservice.util;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class QTList {
-	public ArrayList<QTInfo> QTList = new ArrayList<QTInfo>();
-	public static boolean flag = true;
+    public ArrayList<QTInfo> QTList = new ArrayList<QTInfo>();
+    public static boolean flag = true;
 
-	public void addQTInfo(QTInfo info) {
-		QTList.add(info);
-	}
+    public void addQTInfo(QTInfo info) {
+        QTList.add(info);
+    }
 
-	public void addQTInfo(int index, QTInfo info) {
-		QTList.add(index, info);
-	}
+    public void addQTInfo(int index, QTInfo info) {
+        QTList.add(index, info);
+    }
 
-	public QTInfo get(int index) {
-		return (QTInfo) QTList.get(index);
-	}
+    public QTInfo get(int index) {
+        if (index >= 0 && index < QTList.size()) {
+            return QTList.get(index);
+        } else {
+            return null;
+        }
+    }
 
-	public QTInfo remove(int index) {
-		return QTList.remove(index - 1);
-	}
+    public QTInfo remove(int index) {
+        if (index >= 1 && index < QTList.size()) {
+            return QTList.remove(index - 1);
+        } else {
+            return null;
+        }
+    }
 
-	public void clear() {
-		QTList.clear();
-		QTInfo.size = 0;
-	}
+    public void clear() {
+        QTList.clear();
+        QTInfo.size = 0;
+    }
 
-	public void printQTTable(FileWriter fos) {
-		Iterator<QTInfo> itr = QTList.iterator();
-		try {
-			while (itr.hasNext()) {
-				QTInfo tmp = itr.next();
-				fos.write(Arrays.toString(tmp.toString().getBytes()));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public void printQTTable(FileWriter fos) throws IOException, IOException {
+        try (BufferedWriter writer = new BufferedWriter(fos)) {
+            for (QTInfo tmp : QTList) {
+                writer.write(tmp.toString());
+            }
+        }
+    }
 
-
-	public String printQTTable() {
-		Iterator<QTInfo> itr = QTList.iterator();
-		StringBuilder result = new StringBuilder();
-		try {
-			while (itr.hasNext()) {
-				QTInfo tmp = (QTInfo) itr.next();
-				String st = new String(tmp.toString());
-				result.append(st);
-			}
-			return result.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
+    public String printQTTable() {
+        StringBuilder result = new StringBuilder();
+        for (QTInfo tmp : QTList) {
+            result.append(tmp.toString());
+        }
+        return result.toString();
+    }
 
 }

@@ -10,10 +10,17 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
   public StatementType statementType = new StatementType();
   public VariableTable variableTable = new VariableTable();
   public void printQTTable(char [] buffer, FileWriter fos) {
-    qtList.printQTTable(fos);
+    try {
+      qtList.printQTTable(fos);
+    }
+    catch (Exception e) {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+    }
   }
 
   public String printQTTable() {
+    System.out.println(qtList.printQTTable());
     return qtList.printQTTable();
   }
 
@@ -71,6 +78,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       buffer = st.toCharArray();
       fos.write(buffer); // д���ļ�
       parser.printQTTable(buffer, fos);
+      parser.printQTTable();
 
       // �رղ������ļ�
       fos.close();

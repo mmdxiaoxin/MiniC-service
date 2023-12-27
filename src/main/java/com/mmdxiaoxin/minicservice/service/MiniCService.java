@@ -16,69 +16,43 @@ public class MiniCService {
 
     public Map<String, String> processing(String code) {
         Map<String, String> result = new HashMap<>();
+        // 将代码转换为输入流
         InputStream lexicalStream = new ByteArrayInputStream(code.getBytes());
         InputStream syntaxStream = new ByteArrayInputStream(code.getBytes());
-        InputStream semanticStream = new ByteArrayInputStream(code.getBytes());
-
-        // 词法分析
-        result.put("lexicalAnalysis", performLexicalAnalysis(lexicalStream));
-        // 关闭词法分析流
-        closeStream(lexicalStream);
-
-        // 语法分析
-        result.put("syntaxAnalysis", performSyntaxAnalysis(syntaxStream));
-        // 关闭语法分析流
-        closeStream(syntaxStream);
-
-        // 语义分析
-        result.put("semanticAnalysis", performSemanticAnalysis(semanticStream));
-        // 关闭语义分析流
-        closeStream(semanticStream);
-
-        return result;
-    }
-
-    private String performLexicalAnalysis(InputStream inputStream) {
         try {
-            SimpleCharStream stream = new SimpleCharStream(inputStream);
+            SimpleCharStream stream = new SimpleCharStream(lexicalStream);
             MiniCParserTokenManager tokenManager = new MiniCParserTokenManager(stream);
             StringBuilder lexicalResult = new StringBuilder();
 
             Token token = tokenManager.getNextToken();
+            int index = 0;
             while (token.kind != 0) {
-                lexicalResult.append("(").append(token.kind).append(", ").append(token.image).append(")\n");
+                lexicalResult.append(++index).append(": ").append("(").append(token.kind).append(", ").append(token.image).append(")\n");
                 token = tokenManager.getNextToken();
             }
 
-            return lexicalResult.toString();
-        } finally {
-            closeStream(inputStream);
-        }
-    }
+            // 词法分析
+            result.put("lexicalAnalysis", lexicalResult.toString());
 
-    private String performSyntaxAnalysis(InputStream inputStream) {
-        try {
+            // 语法分析
             StringBuilder syntaxResult = new StringBuilder();
-            MiniCParser miniCParser = new MiniCParser(inputStream);
+            MiniCParser miniCParser = new MiniCParser(syntaxStream);
             SimpleNode n = miniCParser.Start();
             syntaxResult.append(n.dump("->"));
             syntaxResult.append("谢谢。\n\n");
-            return syntaxResult.toString();
-        } catch (ParseException e) {
-            return "语法分析错误：" + e.getMessage();
-        } finally {
-            closeStream(inputStream);
-        }
-    }
+            result.put("syntaxAnalysis", syntaxResult.toString());
 
-    private String performSemanticAnalysis(InputStream inputStream) {
-        try {
-            StringBuilder semanticResult = new StringBuilder("test");
-            // 执行语义分析逻辑
-            return semanticResult.toString();
+            // 语义分析
+            StringBuilder semanticResult = new StringBuilder();
+            semanticResult.append(miniCParser.printQTTable());
+            result.put("semanticAnalysis", semanticResult.toString());
+        } catch (ParseException e) {
+            result.put("syntaxAnalysis", "语法分析错误：" + e.getMessage());
         } finally {
-            closeStream(inputStream);
+            closeStream(lexicalStream);
+            closeStream(syntaxStream);
         }
+        return result;
     }
 
     private void closeStream(InputStream stream) {
