@@ -15,7 +15,7 @@ public class MiniCParserController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "hello";
+        return "index";
     }
 
     @GetMapping("/parser")
