@@ -3,14 +3,14 @@ package com.mmdxiaoxin.minicservice.util;
 import java.util.ArrayList;
 
 public class VariableTable {
-	public ArrayList<Variable> variableList = new ArrayList<Variable>();
+	public ArrayList<Variable> variableList = new ArrayList<>();
 
 	public int size() {
 		return variableList.size();
 	}
 
 	public void addWithCheck(Variable variable) {
-		if (variableList.contains(variable)) {  // api ����
+		if (variableList.contains(variable)) {
 			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName()+ " [" +
 		             variable.getLine() + "," + variable.getColumn() + "]");
 		} else {
@@ -65,18 +65,15 @@ public class VariableTable {
 	}
 
 	private Variable get(int i) {
-		// TODO Auto-generated method stub
 		return variableList.get(i);
 	}
 
 	public void printAll() {
-		
-		for (int i = 0; i < variableList.size(); i++)
-			System.out.print(variableList.get(i).getName() + "  ");
+
+        for (Variable variable : variableList) System.out.print(variable.getName() + "  ");
 		System.out.println("---------");
 	}
 
-	// �������Ѷ���ı������򷵻ظñ������ã����򷵻�null
 	public Variable variableExist(Variable info) {
 		Variable infoP = null;
 		for (int i = variableList.size() - 1; i >= 0; i--) {
