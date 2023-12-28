@@ -43,7 +43,7 @@ public class MiniCParser
 
   public Map < String, String > processing(String code)
   {
-    Map < String, String > result = new HashMap <> ();
+    Map < String, String > result = new HashMap <String, String> ();
     InputStream lexicalStream = new ByteArrayInputStream(code.getBytes());
     InputStream syntaxStream = new ByteArrayInputStream(code.getBytes());
     try
@@ -146,6 +146,7 @@ public class MiniCParser
       buffer = st.toCharArray();
       fos.write(buffer); // 写入文件
       parser.printQTTable(buffer, fos);
+      parser.printQTTable();
       // 关闭并保存文件
       fos.close();
     }
@@ -179,12 +180,91 @@ SKIP :
     "/" >
 }
 
+TOKEN : /* 关键字 (KEYWORDS) */
+{
+  < WHILE : "while" >
+| < IF : "if" >
+| < ELSE : "else" >
+| < INT : "int" >
+| < RETURN : "return" >
+| < VOID : "void" >
+| < MAIN : "main" >
+| < FOR : "for" >
+| < DO : "do" >
+| < SWITCH : "switch" >
+| < CASE : "case" >
+| < BREAK : "break" >
+| < CONTINUE : "continue" >
+| < GOTO : "goto" >
+| < SIZEOF : "sizeof" >
+| < TYPEDEF : "typedef" >
+| < STRUCT : "struct" >
+| < UNION : "union" >
+| < ENUM : "enum" >
+| < REGISTER : "register" >
+| < AUTO : "auto" >
+| < EXTERN : "extern" >
+| < STATIC : "static" >
+| < CONST : "const" >
+| < VOLATILE : "volatile" >
+| < SIGNED : "signed" >
+| < UNSIGNED : "unsigned" >
+| < SHORT : "short" >
+| < LONG : "long" >
+| < FLOAT : "float" >
+| < DOUBLE : "double" >
+| < CHAR : "char" >
+| < DFLT : "default" >
+| < TRUE : "true" >
+| < FALSE : "false" >
+}
+
+TOKEN : /* 运算符 (OPERATORS) */
+{
+  < ADD : "+" >
+| < SUBTRACT : "-" >
+| < MULTIPLY : "*" >
+| < DIVIDE : "/" >
+| < MODULO : "%" >
+| < ASSIGN : "=" >
+| < PLUS_ASSIGN : "+=" >
+| < MINUS_ASSIGN : "-=" >
+| < MUL_ASSIGN : "*=" >
+| < DIV_ASSIGN : "/=" >
+| < MOD_ASSIGN : "%=" >
+| < LESS_THAN : "<" >
+| < LESS_THAN_EQUAL : "<=" >
+| < GREATER_THAN : ">" >
+| < GREATER_THAN_EQUAL : ">=" >
+| < NOT_EQUAL : "!=" >
+| < OR : "||" >
+| < AND : "&&" >
+| <NOT: "!" >
+}
+
+TOKEN : /* 分隔符 (SEPARATORS) */
+{
+  < SEMICOLON : ";" >
+| < COMMA : "," >
+| < COLON : ":" >
+| < LEFT_PAREN : "(" >
+| < RIGHT_PAREN : ")" >
+| < RIGHT_BRACE : "}" >
+| < LEFT_BRACE : "{" >
+| < LEFT_BRACKET : "[" >
+| < RIGHT_BRACKET : "]" >
+| < HASH : "#" >
+| < AMPERSAND : "&" >
+| < PIPE : "|" >
+| < DOT : "." >
+}
+
 TOKEN : /* 特殊常量 */
 {
   < INTEGER_LITERAL :
     < DECIMAL_LITERAL > ([ "l", "L" ])?
-  | < HEX_LITERAL > ([ "l", "L" ])?
-  | < OCTAL_LITERAL > ([ "l", "L" ])? >
+    | < HEX_LITERAL > ([ "l", "L" ])?
+    | < OCTAL_LITERAL > ([ "l", "L" ])? >
 | < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
 | < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
 | < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
@@ -225,43 +305,6 @@ TOKEN : /* 特殊常量 */
     "\"" >
 }
 
-TOKEN : /* 关键字 (KEYWORDS) */
-{
-  < WHILE : "while" >
-| < IF : "if" >
-| < ELSE : "else" >
-| < INT : "int" >
-| < RETURN : "return" >
-| < VOID : "void" >
-| < MAIN : "main" >
-| < FOR : "for" >
-| < DO : "do" >
-| < SWITCH : "switch" >
-| < CASE : "case" >
-| < BREAK : "break" >
-| < CONTINUE : "continue" >
-| < GOTO : "goto" >
-| < SIZEOF : "sizeof" >
-| < TYPEDEF : "typedef" >
-| < STRUCT : "struct" >
-| < UNION : "union" >
-| < ENUM : "enum" >
-| < REGISTER : "register" >
-| < AUTO : "auto" >
-| < EXTERN : "extern" >
-| < STATIC : "static" >
-| < CONST : "const" >
-| < VOLATILE : "volatile" >
-| < SIGNED : "signed" >
-| < UNSIGNED : "unsigned" >
-| < SHORT : "short" >
-| < LONG : "long" >
-| < FLOAT : "float" >
-| < DOUBLE : "double" >
-| < CHAR : "char" >
-| < DFLT : "default" >
-}
-
 TOKEN : /* 字符常量 */
 {
   < #_NUM_CHAR : [ "0"-"9" ] >
@@ -286,46 +329,6 @@ TOKEN : /* 字符常量 */
     | "\n"
     | "\r"
     ) >
-}
-
-TOKEN : /* 运算符 (OPERATORS) */
-{
-  < ADD : "+" >
-| < SUBTRACT : "-" >
-| < MULTIPLY : "*" >
-| < DIVIDE : "/" >
-| < MODULO : "%" >
-| < ASSIGN : "=" >
-| < PLUS_ASSIGN : "+=" >
-| < MINUS_ASSIGN : "-=" >
-| < MUL_ASSIGN : "*=" >
-| < DIV_ASSIGN : "/=" >
-| < MOD_ASSIGN : "%=" >
-| < LESS_THAN : "<" >
-| < LESS_THAN_EQUAL : "<=" >
-| < GREATER_THAN : ">" >
-| < GREATER_THAN_EQUAL : ">=" >
-| < NOT_EQUAL : "!=" >
-| < OR : "||" >
-| < AND : "&&" >
-}
-
-TOKEN : /* 分隔符 (SEPARATORS) */
-{
-  < SEMICOLON : ";" >
-| < COMMA : "," >
-| < COLON : ":" >
-| < LEFT_PAREN : "(" >
-| < RIGHT_PAREN : ")" >
-| < RIGHT_BRACE : "}" >
-| < LEFT_BRACE : "{" >
-| < LEFT_BRACKET : "[" >
-| < RIGHT_BRACKET : "]" >
-| < HASH : "#" >
-| < EXCLAMATION : "!" >
-| < AMPERSAND : "&" >
-| < PIPE : "|" >
-| < DOT : "." >
 }
 
 TOKEN : /* 标识符 (IDENTIFIERS) */
@@ -519,7 +522,7 @@ void ConditionStatement() :
   int index;
 }
 {
-  < IF > < LEFT_PAREN > cValue = parseCondition() < RIGHT_PAREN >
+  < IF > < LEFT_PAREN > cValue = Condition() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
@@ -554,7 +557,7 @@ void WhileStatement() :
   {
     index = QTInfo.size + 1;
   }
-  cValue = parseCondition() < RIGHT_PAREN >
+  cValue = Condition() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
@@ -566,7 +569,7 @@ void WhileStatement() :
   }
 }
 
-ConditionValue parseCondition() :
+ConditionValue Condition() :
 {
   String e1 = null;
   String e2 = null;
@@ -632,6 +635,10 @@ Token Rop() :
   {
     return token;
   }
+| token = < NOT_EQUAL >
+  {
+    return token;
+  }
 }
 
 String Expression() :
@@ -640,6 +647,10 @@ String Expression() :
 }
 {
   s = AdditiveExpression()
+  {
+    return s;
+  }
+  | s = BooleanExpression()
   {
     return s;
   }
@@ -706,6 +717,14 @@ String MultiplicativeExpression() :
   }
 }
 
+String BooleanExpression() :
+{
+  String s = null;
+}
+{
+  s = BooleanTerm() (BooleanOr() BooleanTerm())*
+}
+
 String UnaryExpression() :
 {
   String str = null;
@@ -753,74 +772,49 @@ String parseInteger() :
   }
 }
 
-ConditionValue BoolerExpression() :
+String BooleanTerm() :
 {
-  ConditionValue Value = new ConditionValue();
-  String str1 = null, str2 = null;
-  Token assignmentOperator = null;
-  Token op1 = null;
-  ConditionValue Value2 = new ConditionValue();
-  ConditionValue Valuet = new ConditionValue();
-  int qtSize = QTInfo.size;
-  QTInfo qt1;
-  QTInfo qt2;
+  String s = null;
 }
 {
-  str1 = Expression()
-  (
-    assignmentOperator = Rop() str2 = Expression()
-  )?
-  {
-    if (assignmentOperator != null)
-    {
-      qt1 = new QTInfo("J" + assignmentOperator.image, str1, str2, QTInfo.size + 3);
-      qtList.addQTInfo(qt1);
-    }
-    else
-    {
-      qt1 = new QTInfo("Jnz", str1, "_", QTInfo.size + 3);
-      qtList.addQTInfo(qt1);
-    }
-    qt2 = new QTInfo("J", "_", "_", "F");
-    qtList.addQTInfo(qt2);
-    Value.mergeFalse(qt2);
-  }
-  (
-    (
-      op1 = < AND >
-      {
-        Valuet = new ConditionValue();
-        Valuet.mergeFalse(qt2);
-        Value.backpatchTrueChain(QTInfo.size + 1);
-      }
-    |
-      (
-        op1 = < OR >
-        {
-          Valuet.mergeFalse(qt2);
-          Valuet.backpatchFalseChain(QTInfo.size + 1);
-          Value.backpatchFalseChain(QTInfo.size + 1);
-        }
-      )
-    )
-    Value2 = BoolerExpression()
-    {
-      if (op1.image.equals("&&"))
-      {
-        Value2.mergeFalse(qt2);
-        Value2.backpatchFalseChain(QTInfo.size + 1);
-      }
-      if (op1.image.equals("||"))
-      {
-        Value2.mergeTrue(qt1);
-        Value2.backpatchTrueChain(QTInfo.size + 1);
-      }
-      return Value2;
-    }
-  )?
-  {
-    return Value;
-  }
+  s = BooleanFactor() (BooleanAnd() BooleanFactor())*
+}
+
+String BooleanFactor() :
+{
+  Token t;
+  String s = null;
+}
+{
+  t = <TRUE>
+  | t = <FALSE>
+  | t = <IDENTIFIER>
+  | BooleanNot() BooleanFactor()
+  | "(" Expression() ")"
+}
+
+void BooleanNot() :
+{
+  Token t;
+}
+{
+  t = <NOT>
+}
+
+void BooleanAnd() :
+{
+  Token t;
+}
+{
+  t = <AND>
+}
+
+void BooleanOr() :
+{
+  Token t;
+}
+{
+  t = <OR>
 }
 
 void SwitchCStatement() :
@@ -891,7 +885,7 @@ void DoWhileStatement() :
   )
   < WHILE >
   < LEFT_PAREN >
-  Value = BoolerExpression()
+  Value = Condition()
   < RIGHT_PAREN >
   < SEMICOLON >
   {
@@ -917,7 +911,7 @@ void ForStatement() :
   | AssignmentSentence2()
   )?
   < SEMICOLON >
-  cValue = parseCondition()
+  cValue = Condition()
   < SEMICOLON >
   (
     AssignmentSentence2()
