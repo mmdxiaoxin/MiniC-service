@@ -23,10 +23,9 @@ public interface MiniCParserTreeConstants
   public int JJTUNARYEXPRESSION = 17;
   public int JJTPARSEIDENTIFIER = 18;
   public int JJTPARSEINTEGER = 19;
-  public int JJTBOOLEREXPRESSION = 20;
-  public int JJTSWITCHCSTATEMENT = 21;
-  public int JJTDOWHILESTATEMENT = 22;
-  public int JJTFORSTATEMENT = 23;
+  public int JJTSWITCHCSTATEMENT = 20;
+  public int JJTDOWHILESTATEMENT = 21;
+  public int JJTFORSTATEMENT = 22;
 
 
   public String[] jjtNodeName = {
@@ -50,10 +49,9 @@ public interface MiniCParserTreeConstants
     "UnaryExpression",
     "parseIdentifier",
     "parseInteger",
-    "BoolerExpression",
     "SwitchCStatement",
     "DoWhileStatement",
     "ForStatement",
   };
 }
-/* JavaCC - OriginalChecksum=b1f10efbb15e568db1b5c476156eae41 (do not edit this line) */
+/* JavaCC - OriginalChecksum=7ed4ea935e161f9821a75bbb69c6eb89 (do not edit this line) */

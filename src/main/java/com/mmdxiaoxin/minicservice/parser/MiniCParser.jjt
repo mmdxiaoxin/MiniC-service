@@ -522,7 +522,7 @@ void ConditionStatement() :
   int index;
 }
 {
-  < IF > < LEFT_PAREN > cValue = Condition() < RIGHT_PAREN >
+  < IF > < LEFT_PAREN > cValue = parseCondition() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
@@ -557,7 +557,7 @@ void WhileStatement() :
   {
     index = QTInfo.size + 1;
   }
-  cValue = Condition() < RIGHT_PAREN >
+  cValue = parseCondition() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
@@ -569,7 +569,7 @@ void WhileStatement() :
   }
 }
 
-ConditionValue Condition() :
+ConditionValue parseCondition() :
 {
   String e1 = null;
   String e2 = null;
@@ -635,10 +635,6 @@ Token Rop() :
   {
     return token;
   }
-| token = < NOT_EQUAL >
-  {
-    return token;
-  }
 }
 
 String Expression() :
@@ -647,10 +643,6 @@ String Expression() :
 }
 {
   s = AdditiveExpression()
-  {
-    return s;
-  }
-  | s = BooleanExpression()
   {
     return s;
   }
@@ -717,14 +709,6 @@ String MultiplicativeExpression() :
   }
 }
 
-String BooleanExpression() :
-{
-  String s = null;
-}
-{
-  s = BooleanTerm() (BooleanOr() BooleanTerm())*
-}
-
 String UnaryExpression() :
 {
   String str = null;
@@ -770,51 +754,6 @@ String parseInteger() :
   {
     return token.image;
   }
-}
-
-String BooleanTerm() :
-{
-  String s = null;
-}
-{
-  s = BooleanFactor() (BooleanAnd() BooleanFactor())*
-}
-
-String BooleanFactor() :
-{
-  Token t;
-  String s = null;
-}
-{
-  t = <TRUE>
-  | t = <FALSE>
-  | t = <IDENTIFIER>
-  | BooleanNot() BooleanFactor()
-  | "(" Expression() ")"
-}
-
-void BooleanNot() :
-{
-  Token t;
-}
-{
-  t = <NOT>
-}
-
-void BooleanAnd() :
-{
-  Token t;
-}
-{
-  t = <AND>
-}
-
-void BooleanOr() :
-{
-  Token t;
-}
-{
-  t = <OR>
 }
 
 void SwitchCStatement() :
@@ -885,7 +824,7 @@ void DoWhileStatement() :
   )
   < WHILE >
   < LEFT_PAREN >
-  Value = Condition()
+  Value = parseCondition()
   < RIGHT_PAREN >
   < SEMICOLON >
   {
@@ -911,7 +850,7 @@ void ForStatement() :
   | AssignmentSentence2()
   )?
   < SEMICOLON >
-  cValue = Condition()
+  cValue = parseCondition()
   < SEMICOLON >
   (
     AssignmentSentence2()

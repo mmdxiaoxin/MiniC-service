@@ -11,167 +11,171 @@ public interface MiniCParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 7;
+  int WHILE = 7;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 8;
+  int IF = 8;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 9;
+  int ELSE = 9;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 10;
+  int INT = 10;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 11;
+  int RETURN = 11;
   /** RegularExpression Id. */
-  int EXPONENT = 12;
+  int VOID = 12;
   /** RegularExpression Id. */
-  int CHARACTER_LITERAL = 13;
+  int MAIN = 13;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 14;
+  int FOR = 14;
   /** RegularExpression Id. */
-  int WHILE = 15;
+  int DO = 15;
   /** RegularExpression Id. */
-  int IF = 16;
+  int SWITCH = 16;
   /** RegularExpression Id. */
-  int ELSE = 17;
+  int CASE = 17;
   /** RegularExpression Id. */
-  int INT = 18;
+  int BREAK = 18;
   /** RegularExpression Id. */
-  int RETURN = 19;
+  int CONTINUE = 19;
   /** RegularExpression Id. */
-  int VOID = 20;
+  int GOTO = 20;
   /** RegularExpression Id. */
-  int MAIN = 21;
+  int SIZEOF = 21;
   /** RegularExpression Id. */
-  int FOR = 22;
+  int TYPEDEF = 22;
   /** RegularExpression Id. */
-  int DO = 23;
+  int STRUCT = 23;
   /** RegularExpression Id. */
-  int SWITCH = 24;
+  int UNION = 24;
   /** RegularExpression Id. */
-  int CASE = 25;
+  int ENUM = 25;
   /** RegularExpression Id. */
-  int BREAK = 26;
+  int REGISTER = 26;
   /** RegularExpression Id. */
-  int CONTINUE = 27;
+  int AUTO = 27;
   /** RegularExpression Id. */
-  int GOTO = 28;
+  int EXTERN = 28;
   /** RegularExpression Id. */
-  int SIZEOF = 29;
+  int STATIC = 29;
   /** RegularExpression Id. */
-  int TYPEDEF = 30;
+  int CONST = 30;
   /** RegularExpression Id. */
-  int STRUCT = 31;
+  int VOLATILE = 31;
   /** RegularExpression Id. */
-  int UNION = 32;
+  int SIGNED = 32;
   /** RegularExpression Id. */
-  int ENUM = 33;
+  int UNSIGNED = 33;
   /** RegularExpression Id. */
-  int REGISTER = 34;
+  int SHORT = 34;
   /** RegularExpression Id. */
-  int AUTO = 35;
+  int LONG = 35;
   /** RegularExpression Id. */
-  int EXTERN = 36;
+  int FLOAT = 36;
   /** RegularExpression Id. */
-  int STATIC = 37;
+  int DOUBLE = 37;
   /** RegularExpression Id. */
-  int CONST = 38;
+  int CHAR = 38;
   /** RegularExpression Id. */
-  int VOLATILE = 39;
+  int DFLT = 39;
   /** RegularExpression Id. */
-  int SIGNED = 40;
+  int TRUE = 40;
   /** RegularExpression Id. */
-  int UNSIGNED = 41;
+  int FALSE = 41;
   /** RegularExpression Id. */
-  int SHORT = 42;
+  int ADD = 42;
   /** RegularExpression Id. */
-  int LONG = 43;
+  int SUBTRACT = 43;
   /** RegularExpression Id. */
-  int FLOAT = 44;
+  int MULTIPLY = 44;
   /** RegularExpression Id. */
-  int DOUBLE = 45;
+  int DIVIDE = 45;
   /** RegularExpression Id. */
-  int CHAR = 46;
+  int MODULO = 46;
   /** RegularExpression Id. */
-  int DFLT = 47;
+  int ASSIGN = 47;
   /** RegularExpression Id. */
-  int _NUM_CHAR = 48;
+  int PLUS_ASSIGN = 48;
   /** RegularExpression Id. */
-  int _ESCAPED_CHAR = 49;
+  int MINUS_ASSIGN = 49;
   /** RegularExpression Id. */
-  int _TERM_START_CHAR = 50;
+  int MUL_ASSIGN = 50;
   /** RegularExpression Id. */
-  int _TERM_CHAR = 51;
+  int DIV_ASSIGN = 51;
   /** RegularExpression Id. */
-  int _WHITESPACE = 52;
+  int MOD_ASSIGN = 52;
   /** RegularExpression Id. */
-  int ADD = 53;
+  int LESS_THAN = 53;
   /** RegularExpression Id. */
-  int SUBTRACT = 54;
+  int LESS_THAN_EQUAL = 54;
   /** RegularExpression Id. */
-  int MULTIPLY = 55;
+  int GREATER_THAN = 55;
   /** RegularExpression Id. */
-  int DIVIDE = 56;
+  int GREATER_THAN_EQUAL = 56;
   /** RegularExpression Id. */
-  int MODULO = 57;
+  int NOT_EQUAL = 57;
   /** RegularExpression Id. */
-  int ASSIGN = 58;
+  int OR = 58;
   /** RegularExpression Id. */
-  int PLUS_ASSIGN = 59;
+  int AND = 59;
   /** RegularExpression Id. */
-  int MINUS_ASSIGN = 60;
+  int NOT = 60;
   /** RegularExpression Id. */
-  int MUL_ASSIGN = 61;
+  int SEMICOLON = 61;
   /** RegularExpression Id. */
-  int DIV_ASSIGN = 62;
+  int COMMA = 62;
   /** RegularExpression Id. */
-  int MOD_ASSIGN = 63;
+  int COLON = 63;
   /** RegularExpression Id. */
-  int LESS_THAN = 64;
+  int LEFT_PAREN = 64;
   /** RegularExpression Id. */
-  int LESS_THAN_EQUAL = 65;
+  int RIGHT_PAREN = 65;
   /** RegularExpression Id. */
-  int GREATER_THAN = 66;
+  int RIGHT_BRACE = 66;
   /** RegularExpression Id. */
-  int GREATER_THAN_EQUAL = 67;
+  int LEFT_BRACE = 67;
   /** RegularExpression Id. */
-  int NOT_EQUAL = 68;
+  int LEFT_BRACKET = 68;
   /** RegularExpression Id. */
-  int OR = 69;
+  int RIGHT_BRACKET = 69;
   /** RegularExpression Id. */
-  int AND = 70;
+  int HASH = 70;
   /** RegularExpression Id. */
-  int SEMICOLON = 71;
+  int AMPERSAND = 71;
   /** RegularExpression Id. */
-  int COMMA = 72;
+  int PIPE = 72;
   /** RegularExpression Id. */
-  int COLON = 73;
+  int DOT = 73;
   /** RegularExpression Id. */
-  int LEFT_PAREN = 74;
+  int INTEGER_LITERAL = 74;
   /** RegularExpression Id. */
-  int RIGHT_PAREN = 75;
+  int DECIMAL_LITERAL = 75;
   /** RegularExpression Id. */
-  int RIGHT_BRACE = 76;
+  int HEX_LITERAL = 76;
   /** RegularExpression Id. */
-  int LEFT_BRACE = 77;
+  int OCTAL_LITERAL = 77;
   /** RegularExpression Id. */
-  int LEFT_BRACKET = 78;
+  int FLOATING_POINT_LITERAL = 78;
   /** RegularExpression Id. */
-  int RIGHT_BRACKET = 79;
+  int EXPONENT = 79;
   /** RegularExpression Id. */
-  int HASH = 80;
+  int CHARACTER_LITERAL = 80;
   /** RegularExpression Id. */
-  int EXCLAMATION = 81;
+  int STRING_LITERAL = 81;
   /** RegularExpression Id. */
-  int AMPERSAND = 82;
+  int _NUM_CHAR = 82;
   /** RegularExpression Id. */
-  int PIPE = 83;
+  int _ESCAPED_CHAR = 83;
   /** RegularExpression Id. */
-  int DOT = 84;
+  int _TERM_START_CHAR = 84;
   /** RegularExpression Id. */
-  int IDENTIFIER = 85;
+  int _TERM_CHAR = 85;
   /** RegularExpression Id. */
-  int LETTER = 86;
+  int _WHITESPACE = 86;
   /** RegularExpression Id. */
-  int DIGIT = 87;
+  int IDENTIFIER = 87;
+  /** RegularExpression Id. */
+  int LETTER = 88;
+  /** RegularExpression Id. */
+  int DIGIT = 89;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -185,14 +189,6 @@ public interface MiniCParserConstants {
     "\"\\r\"",
     "<token of kind 5>",
     "<token of kind 6>",
-    "<INTEGER_LITERAL>",
-    "<DECIMAL_LITERAL>",
-    "<HEX_LITERAL>",
-    "<OCTAL_LITERAL>",
-    "<FLOATING_POINT_LITERAL>",
-    "<EXPONENT>",
-    "<CHARACTER_LITERAL>",
-    "<STRING_LITERAL>",
     "\"while\"",
     "\"if\"",
     "\"else\"",
@@ -226,11 +222,8 @@ public interface MiniCParserConstants {
     "\"double\"",
     "\"char\"",
     "\"default\"",
-    "<_NUM_CHAR>",
-    "<_ESCAPED_CHAR>",
-    "<_TERM_START_CHAR>",
-    "<_TERM_CHAR>",
-    "<_WHITESPACE>",
+    "\"true\"",
+    "\"false\"",
     "\"+\"",
     "\"-\"",
     "\"*\"",
@@ -249,6 +242,7 @@ public interface MiniCParserConstants {
     "\"!=\"",
     "\"||\"",
     "\"&&\"",
+    "\"!\"",
     "\";\"",
     "\",\"",
     "\":\"",
@@ -259,10 +253,22 @@ public interface MiniCParserConstants {
     "\"[\"",
     "\"]\"",
     "\"#\"",
-    "\"!\"",
     "\"&\"",
     "\"|\"",
     "\".\"",
+    "<INTEGER_LITERAL>",
+    "<DECIMAL_LITERAL>",
+    "<HEX_LITERAL>",
+    "<OCTAL_LITERAL>",
+    "<FLOATING_POINT_LITERAL>",
+    "<EXPONENT>",
+    "<CHARACTER_LITERAL>",
+    "<STRING_LITERAL>",
+    "<_NUM_CHAR>",
+    "<_ESCAPED_CHAR>",
+    "<_TERM_START_CHAR>",
+    "<_TERM_CHAR>",
+    "<_WHITESPACE>",
     "<IDENTIFIER>",
     "<LETTER>",
     "<DIGIT>",
