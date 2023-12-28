@@ -11,89 +11,128 @@ package parser;
 import util.*;
 import java.io.*;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MiniCParser{
-
+public class MiniCParser
+{
   public QTList qtList = new QTList();
+
   public StatementType statementType = new StatementType();
+
   public VariableTable variableTable = new VariableTable();
-  public void printQTTable(char [] buffer, FileWriter fos) {
-    qtList.printQTTable(buffer, fos);
-  }
-  public Map<String, String> processing(String code) {
-  Map<String, String> result = new HashMap<>();
-  InputStream inputStream = new ByteArrayInputStream(code.getBytes());
-  InputStream inputStream1 = new ByteArrayInputStream(code.getBytes());
-  try {
-        MiniCParser parser = new MiniCParser(inputStream);
-        StringBuilder lexicalResult = new StringBuilder();
-        StringBuilder syntaxResult = new StringBuilder();
-        StringBuilder semanticResult = new StringBuilder();
-        // 词法分析
-        SimpleCharStream stream = new SimpleCharStream(inputStream1);
-        MiniCParserTokenManager tokenManager  = new MiniCParserTokenManager(stream);
-        Token token = tokenManager.getNextToken();
-        while (token.kind != 0) {
-            lexicalResult.append("(").append(token.kind).append(", ").append(token.image).append(")\n");
-            token = tokenManager.getNextToken();
-        }
-        result.put("lexicalAnalysis", lexicalResult.toString());
 
-        // 语法分析
-        SimpleNode n = parser.Start();
-        syntaxResult.append(n.dump("->"));
-        result.put("syntaxAnalysis", syntaxStream.toString());
-        // 语义分析
-        parser.printQTTable();
-        result.put("semanticAnalysis", semanticStream.toString());
-
-        return result;
-      }
-      catch (Exception e) {
-        System.out.println("Oops.");
-        System.out.println(e.getMessage());
-      }
+  public void printQTTable(char [] buffer, FileWriter fos)
+  {
+    try
+    {
+      qtList.printQTTable(fos);
+    }
+    catch (Exception e)
+    {
+      System.out.println("Oops.");
+      System.out.println(e.getMessage());
+    }
   }
-  public static void main(String args []) {
-    try {
-      //输入文件ID
+
+  public String printQTTable()
+  {
+    System.out.println(qtList.printQTTable());
+    return qtList.printQTTable();
+  }
+
+  public Map < String, String > processing(String code)
+  {
+    Map < String, String > result = new HashMap <> ();
+    InputStream lexicalStream = new ByteArrayInputStream(code.getBytes());
+    InputStream syntaxStream = new ByteArrayInputStream(code.getBytes());
+    try
+    {
+      // 词法分析
+      SimpleCharStream stream = new SimpleCharStream(lexicalStream);
+      MiniCParserTokenManager tokenManager = new MiniCParserTokenManager(stream);
+      StringBuilder lexicalResult = new StringBuilder();
+      Token token = tokenManager.getNextToken();
+      int index = 0;
+      while (token.kind != 0)
+      {
+        lexicalResult.append(++index).append(": ").append("(").append(token.kind).append(", ").append(token.image).append(")\n");
+        token = tokenManager.getNextToken();
+      }
+      result.put("lexicalAnalysis", lexicalResult.toString());
+      // 语法分析
+      StringBuilder syntaxResult = new StringBuilder();
+      MiniCParser miniCParser = new MiniCParser(syntaxStream);
+      SimpleNode n = miniCParser.Start();
+      syntaxResult.append(n.dump("->"));
+      syntaxResult.append("\u8c22\u8c22\u3002\n\n");
+      result.put("syntaxAnalysis", syntaxResult.toString());
+      // 语义分析
+      StringBuilder semanticResult = new StringBuilder();
+      semanticResult.append(miniCParser.printQTTable());
+      result.put("semanticAnalysis", semanticResult.toString());
+    }
+    catch (ParseException e)
+    {
+      result.put("syntaxAnalysis", "\u8bed\u6cd5\u5206\u6790\u9519\u8bef\uff1a" + e.getMessage());
+    }
+    finally
+    {
+      closeStream(lexicalStream);
+      closeStream(syntaxStream);
+    }
+    return result;
+  }
+
+  private void closeStream(InputStream stream)
+  {
+    try
+    {
+      stream.close();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace(); // 处理关闭流时的异常
+    }
+  }
+
+  public static void main(String args [])
+  {
+    try
+    {
+      // 输入文件ID
       Scanner scanner = new Scanner(System.in);
-
       System.out.print("Enter input file nameID (input*.txt): ");
       String inputFileID = scanner.nextLine();
-
       FileReader reader = new FileReader("input" + inputFileID + ".txt");
       FileReader reader1 = new FileReader("input" + inputFileID + ".txt");
       File outFile = new File("output" + inputFileID + ".txt");
       FileWriter fos = new FileWriter(outFile);
       char [] buffer = new char [1000];
       MiniCParser parser = new MiniCParser(reader);
-
-	  // 词法分析
+      // 词法分析
       Token token = null;
       SimpleCharStream stream = new SimpleCharStream(reader1);
-      MiniCParserTokenManager tokenManager  = new MiniCParserTokenManager(stream);
-      token = tokenManager .getNextToken();
-      System.out.println("词法分析:\n");
-      String st = new String("词法分析:\n");
+      MiniCParserTokenManager tokenManager = new MiniCParserTokenManager(stream);
+      token = tokenManager.getNextToken();
+      System.out.println("\u8bcd\u6cd5\u5206\u6790:\n");
+      String st = new String("\u8bcd\u6cd5\u5206\u6790:\n");
       buffer = st.toCharArray();
       fos.write(buffer); // 写入文件
-
-      while (token.kind != 0) {
+      while (token.kind != 0)
+      {
         System.out.println("(" + token.kind + ", " + token.image + ")");
         st = new String("( " + token.kind + "," + token.image + " )" + "\n");
         buffer = st.toCharArray();
         fos.write(buffer);
-        token = tokenManager .getNextToken();
+        token = tokenManager.getNextToken();
       }
       System.out.println("\n");
-
       // 语法分析
-      System.out.println("语法分析: ");
-      st = new String("\n语法分析:\n");
+      System.out.println("\u8bed\u6cd5\u5206\u6790: ");
+      st = new String("\n\u8bed\u6cd5\u5206\u6790:\n");
       buffer = st.toCharArray();
       fos.write(buffer); // 写入文件
-
       SimpleNode n = parser.Start();
       n.dump("", buffer, fos);
       st = new String("Thank you.\n\n");
@@ -101,18 +140,17 @@ public class MiniCParser{
       fos.write(buffer); // 写入文件
       System.out.println("Thank you.");
       System.out.println("\n");
-
       // 语义分析
-      System.out.println("语义分析: \n");
-      st = new String("语义分析: \n");
+      System.out.println("\u8bed\u4e49\u5206\u6790: \n");
+      st = new String("\u8bed\u4e49\u5206\u6790: \n");
       buffer = st.toCharArray();
       fos.write(buffer); // 写入文件
       parser.printQTTable(buffer, fos);
-
       // 关闭并保存文件
       fos.close();
     }
-    catch (Exception e) {
+    catch (Exception e)
+    {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
     }
@@ -189,7 +227,7 @@ TOKEN : /* 特殊常量 */
 
 TOKEN : /* 关键字 (KEYWORDS) */
 {
-    < WHILE : "while" >
+  < WHILE : "while" >
 | < IF : "if" >
 | < ELSE : "else" >
 | < INT : "int" >
@@ -274,13 +312,13 @@ TOKEN : /* 运算符 (OPERATORS) */
 
 TOKEN : /* 分隔符 (SEPARATORS) */
 {
-  < SEMICOLON  : ";" >
+  < SEMICOLON : ";" >
 | < COMMA : "," >
 | < COLON : ":" >
-| < LEFT_PAREN: "(" >
+| < LEFT_PAREN : "(" >
 | < RIGHT_PAREN : ")" >
 | < RIGHT_BRACE : "}" >
-| < LEFT_BRACE  : "{" >
+| < LEFT_BRACE : "{" >
 | < LEFT_BRACKET : "[" >
 | < RIGHT_BRACKET : "]" >
 | < HASH : "#" >
@@ -305,23 +343,26 @@ TOKEN : /* 标识符 (IDENTIFIERS) */
 SimpleNode Start() :
 {}
 {
-  parseProgram()
+  Program()
   {
     return jjtThis;
   }
 }
 
-void parseProgram() :
+void Program() :
 {}
 {
-  parseTypeSpecifier() < MAIN > "(" ")" "{"
+  TypeSpecifier()
+  < MAIN >
+  < LEFT_PAREN > < RIGHT_PAREN >
+  < LEFT_BRACE >
   (
-    parseSentenceBlock()
+    StatementBlock()
   )*
-  "}"
+  < RIGHT_BRACE >
 }
 
-String parseTypeSpecifier() :
+String TypeSpecifier() :
 {
   Token token = null;
 }
@@ -356,51 +397,51 @@ String parseTypeSpecifier() :
   }
 }
 
-void parseSentenceBlock() :
+void StatementBlock() :
 {}
 {
-  parseSentence()
-| "{"
+  Statement()
+| < LEFT_BRACE >
   (
-    parseSentenceBlock()
+    StatementBlock()
   )*
-  "}"
+  < RIGHT_BRACE >
 }
 
-void parseSentence() :
+void Statement() :
 {}
 {
-  parseSequenceSentence()
-| parseConditionSentence()
-| parseWhileSentence()
-| parseDoWhile()
-| parseSwitchSentence()
-| parseForSentence()
+  SequenceStatement()
+| ConditionStatement()
+| WhileStatement()
+| DoWhileStatement()
+| SwitchCStatement()
+| ForStatement()
 }
 
-void parseSequenceSentence() :
+void SequenceStatement() :
 {}
 {
-  parseStatementSentence() ";"
-| parseAssignmentSentence() ";"
-| parseReturnSentence() ";"
+  DeclarationStatement() < SEMICOLON >
+| AssignmentStatement() < SEMICOLON >
+| ReturnStatement() < SEMICOLON >
 }
 
-void parseReturnSentence() :
+void ReturnStatement() :
 {}
 {
-  < RETURN > parseExpression()
+  < RETURN > Expression()
 }
 
 // 变量重复声明
-void parseStatementSentence() :
+void DeclarationStatement() :
 {
   Token identifierToken = null;
   Variable variableEntry = new Variable();
   String ty = null;
 }
 {
-  ty = parseTypeSpecifier()
+  ty = TypeSpecifier()
   identifierToken = parseIdentifier()
   {
     variableEntry = new Variable(ty, identifierToken);
@@ -418,7 +459,7 @@ void parseStatementSentence() :
   )*
 }
 
-void parseAssignmentSentence() :
+void AssignmentStatement() :
 {
   String str1 = null;
   String str2 = null;
@@ -438,14 +479,14 @@ void parseAssignmentSentence() :
     }
   }
   assignmentOperator = "="
-  str2 = parseExpression()
+  str2 = Expression()
   {
     QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
     qtList.addQTInfo(qt);
   }
 }
 
-void parseAssignmentSentence2() :
+void AssignmentSentence2() :
 {
   String str2 = null;
   String str1 = null;
@@ -465,24 +506,24 @@ void parseAssignmentSentence2() :
     }
   }
   assignmentOperator = "="
-  str2 = parseExpression()
+  str2 = Expression()
   {
     QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
     qtList.addQTInfo(qt);
   }
 }
 
-void parseConditionSentence() :
+void ConditionStatement() :
 {
   ConditionValue cValue = new ConditionValue();
   int index;
 }
 {
-  < IF > "(" cValue = parseCondition() ")"
+  < IF > < LEFT_PAREN > cValue = parseCondition() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
-  parseSentenceBlock()
+  StatementBlock()
   {
     cValue.backpatchFalseChain(QTInfo.size + 1);
   }
@@ -495,7 +536,7 @@ void parseConditionSentence() :
       qtList.addQTInfo(qtInfo);
       cValue.backpatchFalseChain(QTInfo.size + 1);
     }
-    parseSentenceBlock()
+    StatementBlock()
     {
       qtInfo = qtList.get(index - 1);
       qtInfo.setResult(QTInfo.size + 1);
@@ -503,21 +544,21 @@ void parseConditionSentence() :
   )?
 }
 
-void parseWhileSentence() :
+void WhileStatement() :
 {
   ConditionValue cValue = new ConditionValue();
   int index;
 }
 {
-  < WHILE > "("
+  < WHILE > < LEFT_PAREN >
   {
     index = QTInfo.size + 1;
   }
-  cValue = parseCondition() ")"
+  cValue = parseCondition() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
-  parseSentenceBlock()
+  StatementBlock()
   {
     QTInfo qtInfo = new QTInfo("j", "_", "_", index);
     qtList.addQTInfo(qtInfo);
@@ -534,10 +575,10 @@ ConditionValue parseCondition() :
 }
 {
   (
-    e1 = parseExpression()
+    e1 = Expression()
   )?
   (
-    r = parseRop() e2 = parseExpression()
+    r = Rop() e2 = Expression()
   )?
   {
     if (r == null || e1 == null)
@@ -570,7 +611,7 @@ ConditionValue parseCondition() :
   }
 }
 
-Token parseRop() :
+Token Rop() :
 {
   Token token = null;
 }
@@ -593,18 +634,18 @@ Token parseRop() :
   }
 }
 
-String parseExpression() :
+String Expression() :
 {
   String s = null;
 }
 {
-  s = parseAdditiveExpression()
+  s = AdditiveExpression()
   {
     return s;
   }
 }
 
-String parseAdditiveExpression() :
+String AdditiveExpression() :
 {
   String a = null;
   String b = null;
@@ -612,7 +653,7 @@ String parseAdditiveExpression() :
   Token token = null;
 }
 {
-  a = parseMultiplicativeExpression()
+  a = MultiplicativeExpression()
   {
     result = a;
   }
@@ -621,7 +662,7 @@ String parseAdditiveExpression() :
       token = "+"
     | token = "-"
     )
-    b = parseMultiplicativeExpression()
+    b = MultiplicativeExpression()
     {
       result = VariableNameGenerator.genVariableName();
       QTInfo qtInfo = new QTInfo(token.image, a, b, result);
@@ -634,7 +675,7 @@ String parseAdditiveExpression() :
   }
 }
 
-String parseMultiplicativeExpression() :
+String MultiplicativeExpression() :
 {
   String a = null;
   String b = null;
@@ -642,7 +683,7 @@ String parseMultiplicativeExpression() :
   Token token = null;
 }
 {
-  a = parseUnaryExpression()
+  a = UnaryExpression()
   {
     result = a;
   }
@@ -652,7 +693,7 @@ String parseMultiplicativeExpression() :
     | token = "/"
     | token = "%"
     )
-    b = parseUnaryExpression()
+    b = UnaryExpression()
     {
       result = VariableNameGenerator.genVariableName();
       QTInfo qtInfo = new QTInfo(token.image, a, b, result);
@@ -665,7 +706,7 @@ String parseMultiplicativeExpression() :
   }
 }
 
-String parseUnaryExpression() :
+String UnaryExpression() :
 {
   String str = null;
   Token identifierToken = null;
@@ -673,7 +714,7 @@ String parseUnaryExpression() :
 }
 {
   (
-    "(" str = parseExpression() ")"
+    < LEFT_PAREN > str = Expression() < RIGHT_PAREN >
   | identifierToken = parseIdentifier()
     {
       str = identifierToken.image;
@@ -712,7 +753,7 @@ String parseInteger() :
   }
 }
 
-ConditionValue parseBooler() :
+ConditionValue BoolerExpression() :
 {
   ConditionValue Value = new ConditionValue();
   String str1 = null, str2 = null;
@@ -725,9 +766,9 @@ ConditionValue parseBooler() :
   QTInfo qt2;
 }
 {
-  str1 = parseExpression()
+  str1 = Expression()
   (
-    assignmentOperator = parseRop() str2 = parseExpression()
+    assignmentOperator = Rop() str2 = Expression()
   )?
   {
     if (assignmentOperator != null)
@@ -762,7 +803,7 @@ ConditionValue parseBooler() :
         }
       )
     )
-    Value2 = parseBooler()
+    Value2 = BoolerExpression()
     {
       if (op1.image.equals("&&"))
       {
@@ -782,7 +823,7 @@ ConditionValue parseBooler() :
   }
 }
 
-void parseSwitchSentence() :
+void SwitchCStatement() :
 {
   ConditionValue Value = new ConditionValue();
   String str1 = null;
@@ -796,7 +837,7 @@ void parseSwitchSentence() :
   < LEFT_PAREN >
   tok = parseIdentifier()
   < RIGHT_PAREN >
-  < LEFT_BRACE  >
+  < LEFT_BRACE >
   (
     < CASE >
     tokx = < INTEGER_LITERAL >
@@ -821,21 +862,21 @@ void parseSwitchSentence() :
     }
     < COLON >
     (
-      parseSentenceBlock()
+      StatementBlock()
     )*
     < BREAK >
-    < SEMICOLON  >
+    < SEMICOLON >
   )*
   [
     < DFLT > < COLON >
-    [ parseSentenceBlock() ]
+    [ StatementBlock() ]
     < BREAK >
-    < SEMICOLON  >
+    < SEMICOLON >
   ]
   < RIGHT_BRACE >
 }
 
-void parseDoWhile() :
+void DoWhileStatement() :
 {
   int QTSize = QTInfo.size;
   ConditionValue Value = null;
@@ -846,13 +887,13 @@ void parseDoWhile() :
 {
   < DO >
   (
-    parseSentenceBlock()
+    StatementBlock()
   )
   < WHILE >
   < LEFT_PAREN >
-  Value = parseBooler()
+  Value = BoolerExpression()
   < RIGHT_PAREN >
-  < SEMICOLON  >
+  < SEMICOLON >
   {
     Value.backpatchTrueChain(QTSize + 1);
   }
@@ -861,35 +902,34 @@ void parseDoWhile() :
   }
 }
 
-void parseForSentence() :
+void ForStatement() :
 {
   ConditionValue cValue = new ConditionValue();
   int index;
 }
 {
-  < FOR > "("
+  < FOR > < LEFT_PAREN >
   {
     index = QTInfo.size + 1;
   }
   (
-    parseStatementSentence()
-  | parseAssignmentSentence2()
+    DeclarationStatement()
+  | AssignmentSentence2()
   )?
-  < SEMICOLON  >
+  < SEMICOLON >
   cValue = parseCondition()
-  < SEMICOLON  >
+  < SEMICOLON >
   (
-    parseAssignmentSentence2()
+    AssignmentSentence2()
   )*
-  ")"
+  < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
-  parseSentenceBlock()
+  StatementBlock()
   {
     QTInfo qtInfo = new QTInfo("j", "_", "_", index);
     qtList.addQTInfo(qtInfo);
     cValue.backpatchFalseChain(QTInfo.size + 1);
   }
 }
-

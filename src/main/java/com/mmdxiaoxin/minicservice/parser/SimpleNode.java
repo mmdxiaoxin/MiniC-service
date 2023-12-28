@@ -101,7 +101,6 @@ class SimpleNode implements Node {
 
     return output.toString();
   }
-
 }
 
 /* JavaCC - OriginalChecksum=bfab0df06d01059ae6f78a870af135c6 (do not edit this line) */

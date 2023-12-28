@@ -4,56 +4,56 @@ package com.mmdxiaoxin.minicservice.parser;
 public interface MiniCParserTreeConstants
 {
   public int JJTSTART = 0;
-  public int JJTPARSEPROGRAM = 1;
-  public int JJTPARSETYPESPECIFIER = 2;
-  public int JJTPARSESENTENCEBLOCK = 3;
-  public int JJTPARSESENTENCE = 4;
-  public int JJTPARSESEQUENCESENTENCE = 5;
-  public int JJTPARSERETURNSENTENCE = 6;
-  public int JJTPARSESTATEMENTSENTENCE = 7;
-  public int JJTPARSEASSIGNMENTSENTENCE = 8;
-  public int JJTPARSEASSIGNMENTSENTENCE2 = 9;
-  public int JJTPARSECONDITIONSENTENCE = 10;
-  public int JJTPARSEWHILESENTENCE = 11;
+  public int JJTPROGRAM = 1;
+  public int JJTTYPESPECIFIER = 2;
+  public int JJTSTATEMENTBLOCK = 3;
+  public int JJTSTATEMENT = 4;
+  public int JJTSEQUENCESTATEMENT = 5;
+  public int JJTRETURNSTATEMENT = 6;
+  public int JJTDECLARATIONSTATEMENT = 7;
+  public int JJTASSIGNMENTSTATEMENT = 8;
+  public int JJTASSIGNMENTSENTENCE2 = 9;
+  public int JJTCONDITIONSTATEMENT = 10;
+  public int JJTWHILESTATEMENT = 11;
   public int JJTPARSECONDITION = 12;
-  public int JJTPARSEROP = 13;
-  public int JJTPARSEEXPRESSION = 14;
-  public int JJTPARSEADDITIVEEXPRESSION = 15;
-  public int JJTPARSEMULTIPLICATIVEEXPRESSION = 16;
-  public int JJTPARSEUNARYEXPRESSION = 17;
+  public int JJTROP = 13;
+  public int JJTEXPRESSION = 14;
+  public int JJTADDITIVEEXPRESSION = 15;
+  public int JJTMULTIPLICATIVEEXPRESSION = 16;
+  public int JJTUNARYEXPRESSION = 17;
   public int JJTPARSEIDENTIFIER = 18;
   public int JJTPARSEINTEGER = 19;
-  public int JJTPARSEBOOLER = 20;
-  public int JJTPARSESWITCHSENTENCE = 21;
-  public int JJTPARSEDOWHILE = 22;
-  public int JJTPARSEFORSENTENCE = 23;
+  public int JJTBOOLEREXPRESSION = 20;
+  public int JJTSWITCHCSTATEMENT = 21;
+  public int JJTDOWHILESTATEMENT = 22;
+  public int JJTFORSTATEMENT = 23;
 
 
   public String[] jjtNodeName = {
     "Start",
-    "parseProgram",
-    "parseTypeSpecifier",
-    "parseSentenceBlock",
-    "parseSentence",
-    "parseSequenceSentence",
-    "parseReturnSentence",
-    "parseStatementSentence",
-    "parseAssignmentSentence",
-    "parseAssignmentSentence2",
-    "parseConditionSentence",
-    "parseWhileSentence",
+    "Program",
+    "TypeSpecifier",
+    "StatementBlock",
+    "Statement",
+    "SequenceStatement",
+    "ReturnStatement",
+    "DeclarationStatement",
+    "AssignmentStatement",
+    "AssignmentSentence2",
+    "ConditionStatement",
+    "WhileStatement",
     "parseCondition",
-    "parseRop",
-    "parseExpression",
-    "parseAdditiveExpression",
-    "parseMultiplicativeExpression",
-    "parseUnaryExpression",
+    "Rop",
+    "Expression",
+    "AdditiveExpression",
+    "MultiplicativeExpression",
+    "UnaryExpression",
     "parseIdentifier",
     "parseInteger",
-    "parseBooler",
-    "parseSwitchSentence",
-    "parseDoWhile",
-    "parseForSentence",
+    "BoolerExpression",
+    "SwitchCStatement",
+    "DoWhileStatement",
+    "ForStatement",
   };
 }
-/* JavaCC - OriginalChecksum=5e222bf51855d49f124aa5d216623a22 (do not edit this line) */
+/* JavaCC - OriginalChecksum=b1f10efbb15e568db1b5c476156eae41 (do not edit this line) */
