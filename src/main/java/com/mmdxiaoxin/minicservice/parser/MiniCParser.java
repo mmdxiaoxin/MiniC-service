@@ -1654,7 +1654,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
-                errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+        errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case INCREMENT:
@@ -1687,23 +1687,23 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           break;
         case DECREMENT:
           op = jj_consume_token(DECREMENT);
-          id = parseIdentifier();
-      if (variableTable.variableExist(id.image) == variableEntry)
-      {
-        System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
-                errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
-      }
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-      temp = VariableNameGenerator.genVariableName();
-      qtList.addQTInfo(new QTInfo("+", id.image, "1", temp));
-      qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
           break;
         default:
           jj_la1[32] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
+        id = parseIdentifier();
+      if (variableTable.variableExist(id.image) == variableEntry)
+      {
+        System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+        errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+      }
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+      temp = VariableNameGenerator.genVariableName();
+      qtList.addQTInfo(new QTInfo("+", id.image, "1", temp));
+      qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
         break;
       default:
         jj_la1[33] = jj_gen;
@@ -1745,14 +1745,101 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     finally { jj_save(1, xla); }
   }
 
+  private boolean jj_3R_25() {
+    if (jj_scan_token(LONG)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_17() {
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_24() {
+    if (jj_scan_token(CHAR)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_23() {
+    if (jj_scan_token(FLOAT)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_19() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(53)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(54)) return true;
+    }
+    if (jj_3R_17()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_15() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_18()) {
+    jj_scanpos = xsp;
+    if (jj_3R_19()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3R_18() {
+    if (jj_3R_17()) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_27()) {
+    jj_scanpos = xsp;
+    if (jj_3R_28()) return true;
+    }
+    return false;
+  }
+
+  private boolean jj_3_1() {
+    if (jj_3R_14()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_22() {
+    if (jj_scan_token(VOID)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_28() {
+    if (jj_scan_token(DECREMENT)) return true;
+    return false;
+  }
+
+  private boolean jj_3_2() {
+    if (jj_3R_15()) return true;
+    return false;
+  }
+
   private boolean jj_3R_21() {
     if (jj_scan_token(DOUBLE)) return true;
     return false;
   }
 
-  private boolean jj_3R_29() {
-    if (jj_scan_token(DECREMENT)) return true;
+  private boolean jj_3R_14() {
+    if (jj_3R_16()) return true;
     if (jj_3R_17()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_27() {
+    if (jj_scan_token(INCREMENT)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_26() {
+    if (jj_scan_token(SHORT)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_20() {
+    if (jj_scan_token(INT)) return true;
     return false;
   }
 
@@ -1778,98 +1865,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     }
     }
     }
-    return false;
-  }
-
-  private boolean jj_3R_20() {
-    if (jj_scan_token(INT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_19() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(53)) {
-    jj_scanpos = xsp;
-    if (jj_3R_29()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3_2() {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_28() {
-    if (jj_scan_token(DECREMENT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_27() {
-    if (jj_scan_token(INCREMENT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_14() {
-    if (jj_3R_16()) return true;
-    if (jj_3R_17()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_26() {
-    if (jj_scan_token(SHORT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_18() {
-    if (jj_3R_17()) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_27()) {
-    jj_scanpos = xsp;
-    if (jj_3R_28()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3R_15() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_18()) {
-    jj_scanpos = xsp;
-    if (jj_3R_19()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3R_25() {
-    if (jj_scan_token(LONG)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_24() {
-    if (jj_scan_token(CHAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_23() {
-    if (jj_scan_token(FLOAT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_17() {
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  private boolean jj_3_1() {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_22() {
-    if (jj_scan_token(VOID)) return true;
     return false;
   }
 
