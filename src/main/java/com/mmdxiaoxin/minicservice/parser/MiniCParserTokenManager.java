@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 /** Token Manager. */
 public class MiniCParserTokenManager implements MiniCParserConstants

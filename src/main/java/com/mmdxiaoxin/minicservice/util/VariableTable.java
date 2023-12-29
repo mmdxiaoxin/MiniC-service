@@ -9,13 +9,17 @@ public class VariableTable {
 		return variableList.size();
 	}
 
-	public void addWithCheck(Variable variable) {
+	public String addWithCheck(Variable variable) {
+		String result = null;
 		if (variableList.contains(variable)) {
 			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
 					+ variable.getLine() + "," + variable.getColumn() + "]");
+			result = "\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
+					+ variable.getLine() + "," + variable.getColumn() + "]";
 		} else {
 			variableList.add(variable);
 		}
+		return result;
 	}
 
 	public void addWithCheck(VariableTable varTable) {

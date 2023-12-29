@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Scope("prototype")
@@ -39,8 +39,18 @@ public class MiniCService {
             StringBuilder syntaxResult = new StringBuilder();
             MiniCParser miniCParser = new MiniCParser(syntaxStream);
             SimpleNode n = miniCParser.Start();
+
+            // 处理错误信息
+            miniCParser.errorList.removeIf(Objects::isNull);  // 过滤掉可能的 null
+            Set<String> uniqueErrors = new LinkedHashSet<>(miniCParser.errorList);
+            miniCParser.errorList.clear();
+            miniCParser.errorList.addAll(uniqueErrors);
+
+            // 构建语法分析结果字符串
+            syntaxResult.append(!miniCParser.errorList.isEmpty() ? String.join("\n", miniCParser.errorList) + "\n" : "语法分析成功！\n\n");
             syntaxResult.append(n.dump("->"));
             syntaxResult.append("谢谢。\n\n");
+
             result.put("syntaxAnalysis", syntaxResult.toString());
 
             // 语义分析

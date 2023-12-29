@@ -5,11 +5,14 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, MiniCParserConstants {/*@bgen(jjtree)*/
   protected JJTMiniCParserState jjtree = new JJTMiniCParserState();public QTList qtList = new QTList();
 
   public VariableTable variableTable = new VariableTable();
+
+  public ArrayList < String > errorList = new ArrayList < String > ();
 
   public void printQTTable(char [] buffer, FileWriter fos)
   {
@@ -21,6 +24,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
+      errorList.add(e.getMessage());
     }
   }
 
@@ -28,61 +32,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
   {
     System.out.println(qtList.printQTTable());
     return qtList.printQTTable();
-  }
-
-  public Map < String, String > processing(String code)
-  {
-    Map < String, String > result = new HashMap < String, String > ();
-    InputStream lexicalStream = new ByteArrayInputStream(code.getBytes());
-    InputStream syntaxStream = new ByteArrayInputStream(code.getBytes());
-    try
-    {
-      // �ʷ�����
-      SimpleCharStream stream = new SimpleCharStream(lexicalStream);
-      MiniCParserTokenManager tokenManager = new MiniCParserTokenManager(stream);
-      StringBuilder lexicalResult = new StringBuilder();
-      Token token = tokenManager.getNextToken();
-      int index = 0;
-      while (token.kind != 0)
-      {
-        lexicalResult.append(++index).append(": ").append("(").append(token.kind).append(", ").append(token.image).append(")\u005cn");
-        token = tokenManager.getNextToken();
-      }
-      result.put("lexicalAnalysis", lexicalResult.toString());
-      // �﷨����
-      StringBuilder syntaxResult = new StringBuilder();
-      MiniCParser miniCParser = new MiniCParser(syntaxStream);
-      SimpleNode n = miniCParser.Start();
-      syntaxResult.append(n.dump("->"));
-      syntaxResult.append("\u8c22\u8c22\u3002\u005cn\u005cn");
-      result.put("syntaxAnalysis", syntaxResult.toString());
-      // �������
-      StringBuilder semanticResult = new StringBuilder();
-      semanticResult.append(miniCParser.printQTTable());
-      result.put("semanticAnalysis", semanticResult.toString());
-    }
-    catch (ParseException e)
-    {
-      result.put("syntaxAnalysis", "\u8bed\u6cd5\u5206\u6790\u9519\u8bef\uff1a" + e.getMessage());
-    }
-    finally
-    {
-      closeStream(lexicalStream);
-      closeStream(syntaxStream);
-    }
-    return result;
-  }
-
-  private void closeStream(InputStream stream)
-  {
-    try
-    {
-      stream.close();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace(); // ����ر���ʱ���쳣
-    }
   }
 
   public static void main(String args [])
@@ -635,7 +584,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       ty = TypeSpecifier();
       identifierToken = parseIdentifier();
     variableEntry = new Variable(ty, identifierToken);
-    variableTable.addWithCheck(variableEntry);
+    errorList.add(variableTable.addWithCheck(variableEntry));
       label_6:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -649,7 +598,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         jj_consume_token(COMMA);
         identifierToken = parseIdentifier();
       variableEntry = new Variable(ty, identifierToken);
-      variableTable.addWithCheck(variableEntry);
+      errorList.add(variableTable.addWithCheck(variableEntry));
       }
     } catch (Throwable jjte000) {
     if (jjtc000) {
@@ -687,6 +636,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     if (variableEntry == null)
     {
       System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
+      errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
     }
       assignmentOperator = jj_consume_token(ASSIGN);
       str2 = Expression();
@@ -730,6 +680,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     if (variableEntry == null)
     {
       System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
+      errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
     }
       assignmentOperator = jj_consume_token(ASSIGN);
       str2 = Expression();
@@ -1289,6 +1240,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       if (variableEntry == null)
       {
         System.out.println("\u53d8\u91cf" + str + "\u672a\u5b9a\u4e49");
+        errorList.add("\u53d8\u91cf" + str + "\u672a\u5b9a\u4e49");
       }
         break;
       case INTEGER_LITERAL:
@@ -1648,6 +1600,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+                errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case INCREMENT:
@@ -1684,6 +1637,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+                errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -1735,6 +1689,11 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
+  }
+
+  private boolean jj_3R_21() {
+    if (jj_scan_token(DOUBLE)) return true;
+    return false;
   }
 
   private boolean jj_3R_16() {
@@ -1799,13 +1758,13 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     return false;
   }
 
-  private boolean jj_3R_26() {
-    if (jj_scan_token(SHORT)) return true;
+  private boolean jj_3R_27() {
+    if (jj_scan_token(INCREMENT)) return true;
     return false;
   }
 
-  private boolean jj_3R_27() {
-    if (jj_scan_token(INCREMENT)) return true;
+  private boolean jj_3R_26() {
+    if (jj_scan_token(SHORT)) return true;
     return false;
   }
 
@@ -1816,16 +1775,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
 
   private boolean jj_3R_24() {
     if (jj_scan_token(CHAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_23() {
-    if (jj_scan_token(FLOAT)) return true;
-    return false;
-  }
-
-  private boolean jj_3_1() {
-    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -1850,18 +1799,23 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     return false;
   }
 
+  private boolean jj_3R_23() {
+    if (jj_scan_token(FLOAT)) return true;
+    return false;
+  }
+
   private boolean jj_3R_17() {
     if (jj_scan_token(IDENTIFIER)) return true;
     return false;
   }
 
-  private boolean jj_3R_22() {
-    if (jj_scan_token(VOID)) return true;
+  private boolean jj_3_1() {
+    if (jj_3R_14()) return true;
     return false;
   }
 
-  private boolean jj_3R_21() {
-    if (jj_scan_token(DOUBLE)) return true;
+  private boolean jj_3R_22() {
+    if (jj_scan_token(VOID)) return true;
     return false;
   }
 
@@ -2047,7 +2001,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       return (jj_ntk = jj_nt.kind);
   }
 
-  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+  private java.util.List<int[]> jj_expentries = new ArrayList<int[]>();
   private int[] jj_expentry;
   private int jj_kind = -1;
   private int[] jj_lasttokens = new int[100];
