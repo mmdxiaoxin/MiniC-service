@@ -1586,7 +1586,8 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
       temp = VariableNameGenerator.genVariableName();
-      qtList.addQTInfo(new QTInfo("+", id.image, "1", temp));
+      String operator = (op.image == "++") ? "+" : "-";
+      qtList.addQTInfo(new QTInfo(operator, id.image, "1", temp));
       qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
         break;
       default:
