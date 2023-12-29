@@ -9,8 +9,6 @@ import java.util.Map;
 public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, MiniCParserConstants {/*@bgen(jjtree)*/
   protected JJTMiniCParserState jjtree = new JJTMiniCParserState();public QTList qtList = new QTList();
 
-  public StatementType statementType = new StatementType();
-
   public VariableTable variableTable = new VariableTable();
 
   public void printQTTable(char [] buffer, FileWriter fos)
@@ -636,9 +634,8 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     try {
       ty = TypeSpecifier();
       identifierToken = parseIdentifier();
-    variableEntry = new Variable(ty, String.valueOf(identifierToken));
+    variableEntry = new Variable(ty, identifierToken);
     variableTable.addWithCheck(variableEntry);
-    statementType.setVariableTable(variableTable);
       label_6:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -651,9 +648,8 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         }
         jj_consume_token(COMMA);
         identifierToken = parseIdentifier();
-      variableEntry = new Variable(ty, String.valueOf(identifierToken));
+      variableEntry = new Variable(ty, identifierToken);
       variableTable.addWithCheck(variableEntry);
-      statementType.setVariableTable(variableTable);
       }
     } catch (Throwable jjte000) {
     if (jjtc000) {
@@ -1741,6 +1737,36 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     finally { jj_save(1, xla); }
   }
 
+  private boolean jj_3R_16() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_20()) {
+    jj_scanpos = xsp;
+    if (jj_3R_21()) {
+    jj_scanpos = xsp;
+    if (jj_3R_22()) {
+    jj_scanpos = xsp;
+    if (jj_3R_23()) {
+    jj_scanpos = xsp;
+    if (jj_3R_24()) {
+    jj_scanpos = xsp;
+    if (jj_3R_25()) {
+    jj_scanpos = xsp;
+    if (jj_3R_26()) return true;
+    }
+    }
+    }
+    }
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_20() {
+    if (jj_scan_token(INT)) return true;
+    return false;
+  }
+
   private boolean jj_3R_29() {
     if (jj_scan_token(DECREMENT)) return true;
     if (jj_3R_17()) return true;
@@ -1798,6 +1824,11 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     return false;
   }
 
+  private boolean jj_3_1() {
+    if (jj_3R_14()) return true;
+    return false;
+  }
+
   private boolean jj_3R_18() {
     if (jj_3R_17()) return true;
     Token xsp;
@@ -1824,11 +1855,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     return false;
   }
 
-  private boolean jj_3_1() {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
   private boolean jj_3R_22() {
     if (jj_scan_token(VOID)) return true;
     return false;
@@ -1836,36 +1862,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
 
   private boolean jj_3R_21() {
     if (jj_scan_token(DOUBLE)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_16() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_20()) {
-    jj_scanpos = xsp;
-    if (jj_3R_21()) {
-    jj_scanpos = xsp;
-    if (jj_3R_22()) {
-    jj_scanpos = xsp;
-    if (jj_3R_23()) {
-    jj_scanpos = xsp;
-    if (jj_3R_24()) {
-    jj_scanpos = xsp;
-    if (jj_3R_25()) {
-    jj_scanpos = xsp;
-    if (jj_3R_26()) return true;
-    }
-    }
-    }
-    }
-    }
-    }
-    return false;
-  }
-
-  private boolean jj_3R_20() {
-    if (jj_scan_token(INT)) return true;
     return false;
   }
 

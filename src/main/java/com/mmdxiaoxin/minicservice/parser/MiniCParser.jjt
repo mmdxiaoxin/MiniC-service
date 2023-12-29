@@ -18,8 +18,6 @@ public class MiniCParser
 {
   public QTList qtList = new QTList();
 
-  public StatementType statementType = new StatementType();
-
   public VariableTable variableTable = new VariableTable();
 
   public void printQTTable(char [] buffer, FileWriter fos)
@@ -448,7 +446,6 @@ void DeclarationStatement() :
   {
     variableEntry = new Variable(ty, identifierToken);
     variableTable.addWithCheck(variableEntry);
-    statementType.setVariableTable(variableTable);
   }
   (
     < COMMA >
@@ -456,7 +453,6 @@ void DeclarationStatement() :
     {
       variableEntry = new Variable(ty, identifierToken);
       variableTable.addWithCheck(variableEntry);
-      statementType.setVariableTable(variableTable);
     }
   )*
 }
@@ -917,6 +913,12 @@ void ForStatement() :
   cValue = RelationExpression()
   < SEMICOLON >
   (
+    LOOKAHEAD(2)
+    SelfIncreasing()
+    {
+      qtList.addQTInfo(new QTInfo("J", "_", "_", index));
+    }
+  |
     AssignmentSentence2()
   )*
   < RIGHT_PAREN >
@@ -929,4 +931,54 @@ void ForStatement() :
     qtList.addQTInfo(qtInfo);
     cValue.backpatchFalseChain(QTInfo.size + 1);
   }
+}
+
+void SelfIncreasing() :
+{
+  Token id;
+  Token op;
+  String temp;
+  Variable variableEntry = new Variable();
+}
+{
+  (
+    id = parseIdentifier()
+    {
+      if (variableTable.variableExist(id.image) == variableEntry)
+      {
+        System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+      }
+    }
+    (
+      op = < INCREMENT >
+      {
+        temp = VariableNameGenerator.genVariableName();
+        qtList.addQTInfo(new QTInfo("+", id.image, "1", temp));
+        qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
+      }
+    | op = < DECREMENT >
+      {
+        temp = VariableNameGenerator.genVariableName();
+        qtList.addQTInfo(new QTInfo("-", id.image, "1", temp));
+        qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
+      }
+    )
+  )
+|
+  (
+    op = < INCREMENT >
+  | op = < DECREMENT >
+    id = parseIdentifier()
+    {
+      if (variableTable.variableExist(id.image) == variableEntry)
+      {
+        System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+      }
+    }
+    {
+      temp = VariableNameGenerator.genVariableName();
+      qtList.addQTInfo(new QTInfo("+", id.image, "1", temp));
+      qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
+    }
+  )
 }
