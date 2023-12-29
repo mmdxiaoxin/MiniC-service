@@ -132,15 +132,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      label_1:
-      while (true) {
-        if (jj_2_1(2)) {
-          ;
-        } else {
-          break label_1;
-        }
-        FunctionSatement();
-      }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case VOID:
         jj_consume_token(VOID);
@@ -157,7 +148,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       jj_consume_token(LEFT_PAREN);
       jj_consume_token(RIGHT_PAREN);
       jj_consume_token(LEFT_BRACE);
-      label_2:
+      label_1:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case WHILE:
@@ -179,95 +170,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           break;
         default:
           jj_la1[1] = jj_gen;
-          break label_2;
-        }
-        StatementBlock();
-      }
-      jj_consume_token(RIGHT_BRACE);
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
-  final public void FunctionSatement() throws ParseException {
- /*@bgen(jjtree) FunctionSatement */
-  SimpleNode jjtn000 = new SimpleNode(JJTFUNCTIONSATEMENT);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      TypeSpecifier();
-      parseIdentifier();
-      jj_consume_token(LEFT_PAREN);
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case INT:
-      case VOID:
-      case SHORT:
-      case LONG:
-      case FLOAT:
-      case DOUBLE:
-      case CHAR:
-        TypeSpecifier();
-        parseIdentifier();
-        label_3:
-        while (true) {
-          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case COMMA:
-            ;
-            break;
-          default:
-            jj_la1[2] = jj_gen;
-            break label_3;
-          }
-          jj_consume_token(COMMA);
-          TypeSpecifier();
-          parseIdentifier();
-        }
-        break;
-      default:
-        jj_la1[3] = jj_gen;
-        ;
-      }
-      jj_consume_token(RIGHT_PAREN);
-      jj_consume_token(LEFT_BRACE);
-      label_4:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case WHILE:
-        case IF:
-        case INT:
-        case RETURN:
-        case VOID:
-        case FOR:
-        case DO:
-        case SWITCH:
-        case SHORT:
-        case LONG:
-        case FLOAT:
-        case DOUBLE:
-        case CHAR:
-        case LEFT_BRACE:
-        case IDENTIFIER:
-          ;
-          break;
-        default:
-          jj_la1[4] = jj_gen;
-          break label_4;
+          break label_1;
         }
         StatementBlock();
       }
@@ -343,7 +246,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     {if (true) return token.image;}
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[2] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -380,7 +283,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         break;
       case LEFT_BRACE:
         jj_consume_token(LEFT_BRACE);
-        label_5:
+        label_2:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case WHILE:
@@ -401,15 +304,15 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
             ;
             break;
           default:
-            jj_la1[6] = jj_gen;
-            break label_5;
+            jj_la1[3] = jj_gen;
+            break label_2;
           }
           StatementBlock();
         }
         jj_consume_token(RIGHT_BRACE);
         break;
       default:
-        jj_la1[7] = jj_gen;
+        jj_la1[4] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -468,7 +371,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         ForStatement();
         break;
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[5] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -519,7 +422,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         jj_consume_token(SEMICOLON);
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[6] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -585,15 +488,15 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       identifierToken = parseIdentifier();
     variableEntry = new Variable(ty, identifierToken);
     errorList.add(variableTable.addWithCheck(variableEntry));
-      label_6:
+      label_3:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case COMMA:
           ;
           break;
         default:
-          jj_la1[10] = jj_gen;
-          break label_6;
+          jj_la1[7] = jj_gen;
+          break label_3;
         }
         jj_consume_token(COMMA);
         identifierToken = parseIdentifier();
@@ -665,50 +568,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     }
   }
 
-  final public void AssignmentSentence2() throws ParseException {
- /*@bgen(jjtree) AssignmentSentence2 */
-  SimpleNode jjtn000 = new SimpleNode(JJTASSIGNMENTSENTENCE2);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);String str2 = null;
-  String str1 = null;
-  Token assignmentOperator, identifierToken;
-  Variable variableEntry = new Variable();
-    try {
-      identifierToken = parseIdentifier();
-    str1 = identifierToken.image;
-    variableEntry = variableTable.variableExist(str1);
-    if (variableEntry == null)
-    {
-      System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
-      errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
-    }
-      assignmentOperator = jj_consume_token(ASSIGN);
-      str2 = Expression();
-    jjtree.closeNodeScope(jjtn000, true);
-    jjtc000 = false;
-    QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
-    qtList.addQTInfo(qt);
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
   final public ConditionValue ORExpression() throws ParseException {
  /*@bgen(jjtree) ORExpression */
   SimpleNode jjtn000 = new SimpleNode(JJTOREXPRESSION);
@@ -718,15 +577,15 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     try {
       c1 = ANDExpression();
     c2 = c1;
-      label_7:
+      label_4:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case OR:
           ;
           break;
         default:
-          jj_la1[11] = jj_gen;
-          break label_7;
+          jj_la1[8] = jj_gen;
+          break label_4;
         }
         jj_consume_token(OR);
       c1.backpatchFalseChain(QTInfo.size + 1);
@@ -768,15 +627,15 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     try {
       e1 = NOTExpression();
     e2 = e1;
-      label_8:
+      label_5:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case AND:
           ;
           break;
         default:
-          jj_la1[12] = jj_gen;
-          break label_8;
+          jj_la1[9] = jj_gen;
+          break label_5;
         }
         rop = jj_consume_token(AND);
       e1.backpatchTrueChain(QTInfo.size + 1);
@@ -823,7 +682,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     flag = false;
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[10] = jj_gen;
         ;
       }
       c1 = RelationExpression();
@@ -876,7 +735,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         e2 = Expression();
         break;
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[11] = jj_gen;
         ;
       }
     if (rop != null)
@@ -932,7 +791,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       jj_consume_token(RIGHT_PAREN);
     cValue.backpatchTrueChain(QTInfo.size + 1);
       StatementBlock();
-    cValue.backpatchFalseChain(QTInfo.size + 1);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case ELSE:
         jj_consume_token(ELSE);
@@ -945,9 +803,12 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       qtInfo.setResult(QTInfo.size + 1);
         break;
       default:
-        jj_la1[15] = jj_gen;
+        jj_la1[12] = jj_gen;
         ;
       }
+    jjtree.closeNodeScope(jjtn000, true);
+    jjtc000 = false;
+    cValue.backpatchFalseChain(QTInfo.size + 1);
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1041,7 +902,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     {if (true) return token;}
         break;
       default:
-        jj_la1[16] = jj_gen;
+        jj_la1[13] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1096,7 +957,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     try {
       a = MultiplicativeExpression();
     result = a;
-      label_9:
+      label_6:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case ADD:
@@ -1104,8 +965,8 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           ;
           break;
         default:
-          jj_la1[17] = jj_gen;
-          break label_9;
+          jj_la1[14] = jj_gen;
+          break label_6;
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case ADD:
@@ -1115,7 +976,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           token = jj_consume_token(SUBTRACT);
           break;
         default:
-          jj_la1[18] = jj_gen;
+          jj_la1[15] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -1161,7 +1022,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     try {
       a = UnaryExpression();
     result = a;
-      label_10:
+      label_7:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case MULTIPLY:
@@ -1170,8 +1031,8 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           ;
           break;
         default:
-          jj_la1[19] = jj_gen;
-          break label_10;
+          jj_la1[16] = jj_gen;
+          break label_7;
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case MULTIPLY:
@@ -1184,7 +1045,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           token = jj_consume_token(MODULO);
           break;
         default:
-          jj_la1[20] = jj_gen;
+          jj_la1[17] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -1247,7 +1108,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         str = parseInteger();
         break;
       default:
-        jj_la1[21] = jj_gen;
+        jj_la1[18] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1326,15 +1187,15 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       tok = parseIdentifier();
       jj_consume_token(RIGHT_PAREN);
       jj_consume_token(LEFT_BRACE);
-      label_11:
+      label_8:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case CASE:
           ;
           break;
         default:
-          jj_la1[22] = jj_gen;
-          break label_11;
+          jj_la1[19] = jj_gen;
+          break label_8;
         }
         jj_consume_token(CASE);
         tokx = jj_consume_token(INTEGER_LITERAL);
@@ -1351,7 +1212,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         qt1 = new QTInfo("Jnz", tok.image, "_", QTInfo.size + 3);
         qtList.addQTInfo(qt1);
       }
-      QTInfo qt2 = new QTInfo("J", "_", "_", "F");
+      QTInfo qt2 = new QTInfo("j", "_", "_", "F");
       qtList.addQTInfo(qt2);
       Value.mergeFalse(qt2);
       Value.backpatchFalseChain(QTInfo.size + 2);
@@ -1381,14 +1242,14 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           StatementBlock();
           break;
         default:
-          jj_la1[23] = jj_gen;
+          jj_la1[20] = jj_gen;
           ;
         }
         jj_consume_token(BREAK);
         jj_consume_token(SEMICOLON);
         break;
       default:
-        jj_la1[24] = jj_gen;
+        jj_la1[21] = jj_gen;
         ;
       }
       jj_consume_token(RIGHT_BRACE);
@@ -1440,7 +1301,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         break;
       case LEFT_BRACE:
         jj_consume_token(LEFT_BRACE);
-        label_12:
+        label_9:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case WHILE:
@@ -1461,8 +1322,8 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
             ;
             break;
           default:
-            jj_la1[25] = jj_gen;
-            break label_12;
+            jj_la1[22] = jj_gen;
+            break label_9;
           }
           StatementBlock();
           jj_consume_token(BREAK);
@@ -1471,7 +1332,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         jj_consume_token(RIGHT_BRACE);
         break;
       default:
-        jj_la1[26] = jj_gen;
+        jj_la1[23] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1568,22 +1429,22 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           DeclarationStatement();
           break;
         case IDENTIFIER:
-          AssignmentSentence2();
+          AssignmentStatement();
           break;
         default:
-          jj_la1[27] = jj_gen;
+          jj_la1[24] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
         break;
       default:
-        jj_la1[28] = jj_gen;
+        jj_la1[25] = jj_gen;
         ;
       }
       jj_consume_token(SEMICOLON);
       cValue = RelationExpression();
       jj_consume_token(SEMICOLON);
-      label_13:
+      label_10:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case INCREMENT:
@@ -1592,19 +1453,19 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           ;
           break;
         default:
-          jj_la1[29] = jj_gen;
-          break label_13;
+          jj_la1[26] = jj_gen;
+          break label_10;
         }
-        if (jj_2_2(2)) {
+        if (jj_2_1(2)) {
           SelfIncreasing();
-      qtList.addQTInfo(new QTInfo("J", "_", "_", index));
+      qtList.addQTInfo(new QTInfo("j", "_", "_", index));
         } else {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case IDENTIFIER:
-            AssignmentSentence2();
+            AssignmentStatement();
             break;
           default:
-            jj_la1[30] = jj_gen;
+            jj_la1[27] = jj_gen;
             jj_consume_token(-1);
             throw new ParseException();
           }
@@ -1674,7 +1535,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
         qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
           break;
         default:
-          jj_la1[31] = jj_gen;
+          jj_la1[28] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -1689,7 +1550,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           op = jj_consume_token(DECREMENT);
           break;
         default:
-          jj_la1[32] = jj_gen;
+          jj_la1[29] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -1706,7 +1567,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       qtList.addQTInfo(new QTInfo("=", temp, "_", id.image));
         break;
       default:
-        jj_la1[33] = jj_gen;
+        jj_la1[30] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1738,132 +1599,54 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     finally { jj_save(0, xla); }
   }
 
-  private boolean jj_2_2(int xla) {
-    jj_la = xla; jj_lastpos = jj_scanpos = token;
-    try { return !jj_3_2(); }
-    catch(LookaheadSuccess ls) { return true; }
-    finally { jj_save(1, xla); }
-  }
-
-  private boolean jj_3R_25() {
-    if (jj_scan_token(LONG)) return true;
+  private boolean jj_3R_16() {
+    if (jj_scan_token(DECREMENT)) return true;
     return false;
   }
 
-  private boolean jj_3R_17() {
+  private boolean jj_3_1() {
+    if (jj_3R_11()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_15() {
+    if (jj_scan_token(INCREMENT)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_14() {
     if (jj_scan_token(IDENTIFIER)) return true;
     return false;
   }
 
-  private boolean jj_3R_24() {
-    if (jj_scan_token(CHAR)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_23() {
-    if (jj_scan_token(FLOAT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_19() {
+  private boolean jj_3R_13() {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_scan_token(53)) {
     jj_scanpos = xsp;
     if (jj_scan_token(54)) return true;
     }
-    if (jj_3R_17()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_15() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_18()) {
-    jj_scanpos = xsp;
-    if (jj_3R_19()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3R_18() {
-    if (jj_3R_17()) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_27()) {
-    jj_scanpos = xsp;
-    if (jj_3R_28()) return true;
-    }
-    return false;
-  }
-
-  private boolean jj_3_1() {
     if (jj_3R_14()) return true;
     return false;
   }
 
-  private boolean jj_3R_22() {
-    if (jj_scan_token(VOID)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_28() {
-    if (jj_scan_token(DECREMENT)) return true;
-    return false;
-  }
-
-  private boolean jj_3_2() {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_21() {
-    if (jj_scan_token(DOUBLE)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_14() {
-    if (jj_3R_16()) return true;
-    if (jj_3R_17()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_27() {
-    if (jj_scan_token(INCREMENT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_26() {
-    if (jj_scan_token(SHORT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_20() {
-    if (jj_scan_token(INT)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_16() {
+  private boolean jj_3R_12() {
+    if (jj_3R_14()) return true;
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_3R_20()) {
+    if (jj_3R_15()) {
     jj_scanpos = xsp;
-    if (jj_3R_21()) {
-    jj_scanpos = xsp;
-    if (jj_3R_22()) {
-    jj_scanpos = xsp;
-    if (jj_3R_23()) {
-    jj_scanpos = xsp;
-    if (jj_3R_24()) {
-    jj_scanpos = xsp;
-    if (jj_3R_25()) {
-    jj_scanpos = xsp;
-    if (jj_3R_26()) return true;
+    if (jj_3R_16()) return true;
     }
-    }
-    }
-    }
-    }
+    return false;
+  }
+
+  private boolean jj_3R_11() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_12()) {
+    jj_scanpos = xsp;
+    if (jj_3R_13()) return true;
     }
     return false;
   }
@@ -1879,7 +1662,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   private int jj_gen;
-  final private int[] jj_la1 = new int[34];
+  final private int[] jj_la1 = new int[31];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -1889,15 +1672,15 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1400,0x1dd80,0x0,0x1400,0x1dd80,0x1400,0x1dd80,0x1dd80,0x1dd80,0x1c00,0x0,0x0,0x0,0x0,0x0,0x200,0x0,0x0,0x0,0x0,0x0,0x0,0x20000,0x1dd80,0x0,0x1dd80,0x1dd80,0x1400,0x1400,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_0 = new int[] {0x1400,0x1dd80,0x1400,0x1dd80,0x1dd80,0x1dd80,0x1c00,0x0,0x0,0x0,0x0,0x0,0x200,0x0,0x0,0x0,0x0,0x0,0x0,0x20000,0x1dd80,0x0,0x1dd80,0x1dd80,0x1400,0x1400,0x0,0x0,0x0,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x7c,0x0,0x7c,0x7c,0x7c,0x7c,0x7c,0x7c,0x7c,0x0,0x10000000,0x20000000,0x40000000,0x7800000,0x0,0x7800000,0xc00,0xc00,0x7000,0x7000,0x0,0x0,0x7c,0x80,0x7c,0x7c,0x7c,0x7c,0x600000,0x0,0x600000,0x600000,0x600000,};
+      jj_la1_1 = new int[] {0x0,0x7c,0x7c,0x7c,0x7c,0x7c,0x7c,0x0,0x10000000,0x20000000,0x40000000,0x7800000,0x0,0x7800000,0xc00,0xc00,0x7000,0x7000,0x0,0x0,0x7c,0x80,0x7c,0x7c,0x7c,0x7c,0x600000,0x0,0x600000,0x600000,0x600000,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x100020,0x1,0x0,0x100020,0x0,0x100020,0x100020,0x100000,0x100000,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x101004,0x0,0x100020,0x0,0x100020,0x100020,0x100000,0x100000,0x100000,0x100000,0x0,0x0,0x100000,};
+      jj_la1_2 = new int[] {0x0,0x100020,0x0,0x100020,0x100020,0x100000,0x100000,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x101004,0x0,0x100020,0x0,0x100020,0x100020,0x100000,0x100000,0x100000,0x100000,0x0,0x0,0x100000,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[2];
+  final private JJCalls[] jj_2_rtns = new JJCalls[1];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -1912,7 +1695,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 34; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1928,7 +1711,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 34; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1939,7 +1722,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 34; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1951,7 +1734,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 34; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1961,7 +1744,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 34; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1972,7 +1755,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 34; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2089,7 +1872,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 34; i++) {
+    for (int i = 0; i < 31; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -2131,7 +1914,7 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
 
   private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 1; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -2139,7 +1922,6 @@ public class MiniCParser/*@bgen(jjtree)*/implements MiniCParserTreeConstants, Mi
           jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
           switch (i) {
             case 0: jj_3_1(); break;
-            case 1: jj_3_2(); break;
           }
         }
         p = p.next;

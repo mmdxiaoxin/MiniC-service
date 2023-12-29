@@ -12,8 +12,8 @@ public class VariableTable {
 	public String addWithCheck(Variable variable) {
 		String result = null;
 		if (variableList.contains(variable)) {
-			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
-					+ variable.getLine() + "," + variable.getColumn() + "]");
+			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " [line:"
+					+ variable.getLine() + ", column:" + variable.getColumn() + "]");
 			result = "\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " [line:"
 					+ variable.getLine() + ", column:" + variable.getColumn() + "]";
 		} else {
