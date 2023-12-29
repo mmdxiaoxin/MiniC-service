@@ -47,13 +47,16 @@ public class MiniCService {
             miniCParser.errorList.addAll(uniqueErrors);
 
             // 构建语法分析结果字符串
-            syntaxResult.append(!miniCParser.errorList.isEmpty() ? String.join("\n\n", miniCParser.errorList) + "\n\n" : "语法分析成功！\n\n");
-            syntaxResult.append("语法树:\n");
-            syntaxResult.append(n.dump("->"));
-            syntaxResult.append("谢谢。\n\n");
-
-            result.put("syntaxAnalysis", syntaxResult.toString());
-
+            if (!miniCParser.errorList.isEmpty()) {
+                syntaxResult.append(String.join("\n\n", miniCParser.errorList)).append("\n\n");
+                result.put("syntaxAnalysis", syntaxResult.toString());
+            } else {
+                syntaxResult.append("语法分析成功！\n\n");
+                syntaxResult.append("语法树:\n");
+                syntaxResult.append(n.dump("->"));
+                syntaxResult.append("谢谢。\n\n");
+                result.put("syntaxAnalysis", syntaxResult.toString());
+            }
             // 语义分析
             StringBuilder semanticResult = new StringBuilder();
             semanticResult.append(miniCParser.printQTTable());
