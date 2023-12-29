@@ -47,7 +47,8 @@ public class MiniCService {
             miniCParser.errorList.addAll(uniqueErrors);
 
             // 构建语法分析结果字符串
-            syntaxResult.append(!miniCParser.errorList.isEmpty() ? String.join("\n", miniCParser.errorList) + "\n" : "语法分析成功！\n\n");
+            syntaxResult.append(!miniCParser.errorList.isEmpty() ? String.join("\n\n", miniCParser.errorList) + "\n\n" : "语法分析成功！\n\n");
+            syntaxResult.append("语法树:\n");
             syntaxResult.append(n.dump("->"));
             syntaxResult.append("谢谢。\n\n");
 
