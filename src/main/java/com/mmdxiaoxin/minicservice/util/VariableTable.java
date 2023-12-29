@@ -14,8 +14,8 @@ public class VariableTable {
 		if (variableList.contains(variable)) {
 			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
 					+ variable.getLine() + "," + variable.getColumn() + "]");
-			result = "\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
-					+ variable.getLine() + "," + variable.getColumn() + "]";
+			result = "\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " [line:"
+					+ variable.getLine() + ", column:" + variable.getColumn() + "]";
 		} else {
 			variableList.add(variable);
 		}
@@ -73,13 +73,10 @@ public class VariableTable {
 	}
 
 	public void printAll() {
-
-		for (int i = 0; i < variableList.size(); i++)
-			System.out.print(variableList.get(i).getName() + "  ");
+        for (Variable variable : variableList) System.out.print(variable.getName() + "  ");
 		System.out.println("---------");
 	}
 
-	// 若含有已定义的变量，则返回该变量引用，否则返回null
 	public Variable variableExist(Variable info) {
 		Variable infoP = null;
 		for (int i = variableList.size() - 1; i >= 0; i--) {
