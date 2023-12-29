@@ -3,9 +3,9 @@ package com.mmdxiaoxin.minicservice.util;
 //������Ԫʽ����Ϣ
 public class QTInfo {
 	public static int START = 0;
-	public static int innerIdSeqen = START;
-	public static int size = 0;
-	private int innerId;
+	public static int innerIdSeqen = START; // ��Ԫʽȫ�ָ���
+	public static int size = 0; // ��Ԫʽȫ�ָ���
+	private int innerId; // ��ǰ��ԪʽID
 	private String operator;
 	private String arg1;
 	private String arg2;

@@ -5,32 +5,38 @@ public interface MiniCParserTreeConstants
 {
   public int JJTSTART = 0;
   public int JJTPROGRAM = 1;
-  public int JJTTYPESPECIFIER = 2;
-  public int JJTSTATEMENTBLOCK = 3;
-  public int JJTSTATEMENT = 4;
-  public int JJTSEQUENCESTATEMENT = 5;
-  public int JJTRETURNSTATEMENT = 6;
-  public int JJTDECLARATIONSTATEMENT = 7;
-  public int JJTASSIGNMENTSTATEMENT = 8;
-  public int JJTASSIGNMENTSENTENCE2 = 9;
-  public int JJTCONDITIONSTATEMENT = 10;
-  public int JJTWHILESTATEMENT = 11;
-  public int JJTPARSECONDITION = 12;
-  public int JJTROP = 13;
-  public int JJTEXPRESSION = 14;
-  public int JJTADDITIVEEXPRESSION = 15;
-  public int JJTMULTIPLICATIVEEXPRESSION = 16;
-  public int JJTUNARYEXPRESSION = 17;
-  public int JJTPARSEIDENTIFIER = 18;
-  public int JJTPARSEINTEGER = 19;
-  public int JJTSWITCHCSTATEMENT = 20;
-  public int JJTDOWHILESTATEMENT = 21;
-  public int JJTFORSTATEMENT = 22;
+  public int JJTFUNCTIONSATEMENT = 2;
+  public int JJTTYPESPECIFIER = 3;
+  public int JJTSTATEMENTBLOCK = 4;
+  public int JJTSTATEMENT = 5;
+  public int JJTSEQUENCESTATEMENT = 6;
+  public int JJTRETURNSTATEMENT = 7;
+  public int JJTDECLARATIONSTATEMENT = 8;
+  public int JJTASSIGNMENTSTATEMENT = 9;
+  public int JJTASSIGNMENTSENTENCE2 = 10;
+  public int JJTOREXPRESSION = 11;
+  public int JJTANDEXPRESSION = 12;
+  public int JJTNOTEXPRESSION = 13;
+  public int JJTRELATIONEXPRESSION = 14;
+  public int JJTCONDITIONSTATEMENT = 15;
+  public int JJTWHILESTATEMENT = 16;
+  public int JJTROP = 17;
+  public int JJTEXPRESSION = 18;
+  public int JJTADDITIVEEXPRESSION = 19;
+  public int JJTMULTIPLICATIVEEXPRESSION = 20;
+  public int JJTUNARYEXPRESSION = 21;
+  public int JJTPARSEIDENTIFIER = 22;
+  public int JJTPARSEINTEGER = 23;
+  public int JJTSWITCHCSTATEMENT = 24;
+  public int JJTDOWHILESTATEMENT = 25;
+  public int JJTFORSTATEMENT = 26;
+  public int JJTSELFINCREASING = 27;
 
 
   public String[] jjtNodeName = {
     "Start",
     "Program",
+    "FunctionSatement",
     "TypeSpecifier",
     "StatementBlock",
     "Statement",
@@ -39,9 +45,12 @@ public interface MiniCParserTreeConstants
     "DeclarationStatement",
     "AssignmentStatement",
     "AssignmentSentence2",
+    "ORExpression",
+    "ANDExpression",
+    "NOTExpression",
+    "RelationExpression",
     "ConditionStatement",
     "WhileStatement",
-    "parseCondition",
     "Rop",
     "Expression",
     "AdditiveExpression",
@@ -52,6 +61,7 @@ public interface MiniCParserTreeConstants
     "SwitchCStatement",
     "DoWhileStatement",
     "ForStatement",
+    "SelfIncreasing",
   };
 }
-/* JavaCC - OriginalChecksum=7ed4ea935e161f9821a75bbb69c6eb89 (do not edit this line) */
+/* JavaCC - OriginalChecksum=fa0afa9e0a29b7b3386fbca1ef9ba64e (do not edit this line) */

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ConditionValue {
-	private ArrayList<QTInfo> trueChain = new ArrayList<QTInfo>();
-	private ArrayList<QTInfo> falseChain = new ArrayList<QTInfo>();
+	public ArrayList<QTInfo> trueChain = new ArrayList<QTInfo>();
+	public ArrayList<QTInfo> falseChain = new ArrayList<QTInfo>();
 	
 	public void mergeTrue(QTInfo qtTrue){
 		trueChain.add(qtTrue);
@@ -13,7 +13,14 @@ public class ConditionValue {
 	public void mergeFalse(QTInfo qtFalse){
 		falseChain.add(qtFalse);
 	}
-	
+	public void mergeTrue(ConditionValue cValue1){
+		trueChain.addAll(cValue1.trueChain);
+		
+	}
+	public void mergeFalse(ConditionValue cValue1){
+		falseChain.addAll(cValue1.falseChain);
+		
+	}
 	public void backpatchTrueChain(int result){
 		Iterator<QTInfo> itr = trueChain.iterator();
 		while(itr.hasNext()){

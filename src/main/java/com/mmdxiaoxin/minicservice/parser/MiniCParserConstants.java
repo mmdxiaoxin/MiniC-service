@@ -103,79 +103,73 @@ public interface MiniCParserConstants {
   /** RegularExpression Id. */
   int MOD_ASSIGN = 52;
   /** RegularExpression Id. */
-  int LESS_THAN = 53;
+  int INCREMENT = 53;
   /** RegularExpression Id. */
-  int LESS_THAN_EQUAL = 54;
+  int DECREMENT = 54;
   /** RegularExpression Id. */
-  int GREATER_THAN = 55;
+  int LESS_THAN = 55;
   /** RegularExpression Id. */
-  int GREATER_THAN_EQUAL = 56;
+  int LESS_THAN_EQUAL = 56;
   /** RegularExpression Id. */
-  int NOT_EQUAL = 57;
+  int GREATER_THAN = 57;
   /** RegularExpression Id. */
-  int OR = 58;
+  int GREATER_THAN_EQUAL = 58;
   /** RegularExpression Id. */
-  int AND = 59;
+  int NOT_EQUAL = 59;
   /** RegularExpression Id. */
-  int NOT = 60;
+  int OR = 60;
   /** RegularExpression Id. */
-  int SEMICOLON = 61;
+  int AND = 61;
   /** RegularExpression Id. */
-  int COMMA = 62;
+  int NOT = 62;
   /** RegularExpression Id. */
-  int COLON = 63;
+  int SEMICOLON = 63;
   /** RegularExpression Id. */
-  int LEFT_PAREN = 64;
+  int COMMA = 64;
   /** RegularExpression Id. */
-  int RIGHT_PAREN = 65;
+  int COLON = 65;
   /** RegularExpression Id. */
-  int RIGHT_BRACE = 66;
+  int LEFT_PAREN = 66;
   /** RegularExpression Id. */
-  int LEFT_BRACE = 67;
+  int RIGHT_PAREN = 67;
   /** RegularExpression Id. */
-  int LEFT_BRACKET = 68;
+  int RIGHT_BRACE = 68;
   /** RegularExpression Id. */
-  int RIGHT_BRACKET = 69;
+  int LEFT_BRACE = 69;
   /** RegularExpression Id. */
-  int HASH = 70;
+  int LEFT_BRACKET = 70;
   /** RegularExpression Id. */
-  int AMPERSAND = 71;
+  int RIGHT_BRACKET = 71;
   /** RegularExpression Id. */
-  int PIPE = 72;
+  int HASH = 72;
   /** RegularExpression Id. */
-  int DOT = 73;
+  int AMPERSAND = 73;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 74;
+  int PIPE = 74;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 75;
+  int DOT = 75;
   /** RegularExpression Id. */
-  int HEX_LITERAL = 76;
+  int INTEGER_LITERAL = 76;
   /** RegularExpression Id. */
-  int OCTAL_LITERAL = 77;
+  int DECIMAL_LITERAL = 77;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 78;
+  int HEX_LITERAL = 78;
   /** RegularExpression Id. */
-  int EXPONENT = 79;
+  int OCTAL_LITERAL = 79;
   /** RegularExpression Id. */
-  int CHARACTER_LITERAL = 80;
+  int FLOATING_POINT_LITERAL = 80;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 81;
+  int EXPONENT = 81;
   /** RegularExpression Id. */
-  int _NUM_CHAR = 82;
+  int CHARACTER_LITERAL = 82;
   /** RegularExpression Id. */
-  int _ESCAPED_CHAR = 83;
+  int STRING_LITERAL = 83;
   /** RegularExpression Id. */
-  int _TERM_START_CHAR = 84;
+  int IDENTIFIER = 84;
   /** RegularExpression Id. */
-  int _TERM_CHAR = 85;
+  int LETTER = 85;
   /** RegularExpression Id. */
-  int _WHITESPACE = 86;
-  /** RegularExpression Id. */
-  int IDENTIFIER = 87;
-  /** RegularExpression Id. */
-  int LETTER = 88;
-  /** RegularExpression Id. */
-  int DIGIT = 89;
+  int DIGIT = 86;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -235,6 +229,8 @@ public interface MiniCParserConstants {
     "\"*=\"",
     "\"/=\"",
     "\"%=\"",
+    "\"++\"",
+    "\"--\"",
     "\"<\"",
     "\"<=\"",
     "\">\"",
@@ -264,11 +260,6 @@ public interface MiniCParserConstants {
     "<EXPONENT>",
     "<CHARACTER_LITERAL>",
     "<STRING_LITERAL>",
-    "<_NUM_CHAR>",
-    "<_ESCAPED_CHAR>",
-    "<_TERM_START_CHAR>",
-    "<_TERM_CHAR>",
-    "<_WHITESPACE>",
     "<IDENTIFIER>",
     "<LETTER>",
     "<DIGIT>",

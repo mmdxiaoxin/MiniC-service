@@ -43,7 +43,7 @@ public class MiniCParser
 
   public Map < String, String > processing(String code)
   {
-    Map < String, String > result = new HashMap <String, String> ();
+    Map < String, String > result = new HashMap < String, String > ();
     InputStream lexicalStream = new ByteArrayInputStream(code.getBytes());
     InputStream syntaxStream = new ByteArrayInputStream(code.getBytes());
     try
@@ -118,7 +118,7 @@ public class MiniCParser
       System.out.println("\u8bcd\u6cd5\u5206\u6790:\n");
       String st = new String("\u8bcd\u6cd5\u5206\u6790:\n");
       buffer = st.toCharArray();
-      fos.write(buffer); // 写入文件
+      fos.write(buffer);
       while (token.kind != 0)
       {
         System.out.println("(" + token.kind + ", " + token.image + ")");
@@ -132,7 +132,7 @@ public class MiniCParser
       System.out.println("\u8bed\u6cd5\u5206\u6790: ");
       st = new String("\n\u8bed\u6cd5\u5206\u6790:\n");
       buffer = st.toCharArray();
-      fos.write(buffer); // 写入文件
+      fos.write(buffer);
       SimpleNode n = parser.Start();
       n.dump("", buffer, fos);
       st = new String("Thank you.\n\n");
@@ -144,10 +144,9 @@ public class MiniCParser
       System.out.println("\u8bed\u4e49\u5206\u6790: \n");
       st = new String("\u8bed\u4e49\u5206\u6790: \n");
       buffer = st.toCharArray();
-      fos.write(buffer); // 写入文件
+      fos.write(buffer);
       parser.printQTTable(buffer, fos);
       parser.printQTTable();
-      // 关闭并保存文件
       fos.close();
     }
     catch (Exception e)
@@ -232,6 +231,8 @@ TOKEN : /* 运算符 (OPERATORS) */
 | < MUL_ASSIGN : "*=" >
 | < DIV_ASSIGN : "/=" >
 | < MOD_ASSIGN : "%=" >
+| < INCREMENT : "++" >
+| < DECREMENT : "--" >
 | < LESS_THAN : "<" >
 | < LESS_THAN_EQUAL : "<=" >
 | < GREATER_THAN : ">" >
@@ -239,7 +240,7 @@ TOKEN : /* 运算符 (OPERATORS) */
 | < NOT_EQUAL : "!=" >
 | < OR : "||" >
 | < AND : "&&" >
-| <NOT: "!" >
+| < NOT : "!" >
 }
 
 TOKEN : /* 分隔符 (SEPARATORS) */
@@ -263,8 +264,8 @@ TOKEN : /* 特殊常量 */
 {
   < INTEGER_LITERAL :
     < DECIMAL_LITERAL > ([ "l", "L" ])?
-    | < HEX_LITERAL > ([ "l", "L" ])?
-    | < OCTAL_LITERAL > ([ "l", "L" ])? >
+  | < HEX_LITERAL > ([ "l", "L" ])?
+  | < OCTAL_LITERAL > ([ "l", "L" ])? >
 | < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
 | < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
 | < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
@@ -305,32 +306,6 @@ TOKEN : /* 特殊常量 */
     "\"" >
 }
 
-TOKEN : /* 字符常量 */
-{
-  < #_NUM_CHAR : [ "0"-"9" ] >
-| < #_ESCAPED_CHAR : "\\" ~[ ] >
-| < #_TERM_START_CHAR :
-    (
-      ~[ " ", "\t", "\n", "\r", "+", "-", "!", "(", ")", ":", "^",
-      "[", "]", "\"", "{", "}", "~", "*", "?", "\\" ]
-    | < _ESCAPED_CHAR >
-    ) >
-| < #_TERM_CHAR :
-    (
-      < _TERM_START_CHAR >
-    | < _ESCAPED_CHAR >
-    | "-"
-    | "+"
-    ) >
-| < #_WHITESPACE :
-    (
-      " "
-    | "\t"
-    | "\n"
-    | "\r"
-    ) >
-}
-
 TOKEN : /* 标识符 (IDENTIFIERS) */
 {
   < IDENTIFIER :
@@ -355,9 +330,34 @@ SimpleNode Start() :
 void Program() :
 {}
 {
-  TypeSpecifier()
+  (
+    LOOKAHEAD(2)
+    FunctionSatement()
+  )*
+  (
+    < VOID >
+  | < INT >
+  )
   < MAIN >
   < LEFT_PAREN > < RIGHT_PAREN >
+  < LEFT_BRACE >
+  (
+    StatementBlock()
+  )*
+  < RIGHT_BRACE >
+}
+
+void FunctionSatement() :
+{}
+{
+  TypeSpecifier() parseIdentifier() < LEFT_PAREN >
+  (
+    TypeSpecifier() parseIdentifier()
+    (
+      "," TypeSpecifier() parseIdentifier()
+    )*
+  )?
+  < RIGHT_PAREN >
   < LEFT_BRACE >
   (
     StatementBlock()
@@ -436,7 +436,6 @@ void ReturnStatement() :
   < RETURN > Expression()
 }
 
-// 变量重复声明
 void DeclarationStatement() :
 {
   Token identifierToken = null;
@@ -516,13 +515,123 @@ void AssignmentSentence2() :
   }
 }
 
+ConditionValue ORExpression() :
+{
+  ConditionValue c1;
+  ConditionValue c2;
+}
+{
+  c1 = ANDExpression()
+  {
+    c2 = c1;
+  }
+  (
+    "||"
+    {
+      c1.backpatchFalseChain(QTInfo.size + 1);
+    }
+    c2 = ANDExpression()
+    {
+      c2.mergeTrue(c1);
+      c1 = c2;
+    }
+  )*
+  {
+    return c2;
+  }
+}
+
+ConditionValue ANDExpression() :
+{
+  ConditionValue e1, e2 = null;
+  Token rop = null;
+}
+{
+  e1 = NOTExpression()
+  {
+    e2 = e1;
+  }
+  (
+    rop = < AND >
+    {
+      e1.backpatchTrueChain(QTInfo.size + 1);
+    }
+    e2 = NOTExpression()
+    {
+      e2.mergeFalse(e1);
+      e1 = e2;
+    }
+  )*
+  {
+    return e2;
+  }
+}
+
+ConditionValue NOTExpression() :
+{
+  ConditionValue c1;
+  ConditionValue c2 = new ConditionValue();
+  boolean flag = true;
+}
+{
+  ("!"
+  {
+    flag = false;
+  }
+  )?
+  c1 = RelationExpression()
+  {
+    if (!flag)
+    {
+      c2.trueChain = c1.falseChain;
+      c2.falseChain = c1.trueChain;
+      return c2;
+    }
+    return c1;
+  }
+}
+
+ConditionValue RelationExpression() :
+{
+  String e1, e2 = null;
+  Token rop = null;
+  ConditionValue chain = new ConditionValue();
+}
+{
+  e1 = Expression()
+  (
+    rop = Rop()
+    e2 = Expression()
+  )?
+  {
+    if (rop != null)
+    {
+      QTInfo info = new QTInfo("j" + rop, e1, e2, "T");
+      qtList.addQTInfo(info);
+      chain.mergeTrue(info);
+    }
+    else
+    {
+      QTInfo info = new QTInfo("jnz", e1, "_", "T");
+      qtList.addQTInfo(info);
+      chain.mergeTrue(info);
+    }
+    QTInfo info = new QTInfo("j", "_", "_", "F");
+    qtList.addQTInfo(info);
+    chain.mergeFalse(info);
+  }
+  {
+    return chain;
+  }
+}
+
 void ConditionStatement() :
 {
   ConditionValue cValue = new ConditionValue();
   int index;
 }
 {
-  < IF > < LEFT_PAREN > cValue = parseCondition() < RIGHT_PAREN >
+  < IF > < LEFT_PAREN > cValue = ORExpression() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
@@ -557,7 +666,7 @@ void WhileStatement() :
   {
     index = QTInfo.size + 1;
   }
-  cValue = parseCondition() < RIGHT_PAREN >
+  cValue = ORExpression() < RIGHT_PAREN >
   {
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
@@ -566,51 +675,6 @@ void WhileStatement() :
     QTInfo qtInfo = new QTInfo("j", "_", "_", index);
     qtList.addQTInfo(qtInfo);
     cValue.backpatchFalseChain(QTInfo.size + 1);
-  }
-}
-
-ConditionValue parseCondition() :
-{
-  String e1 = null;
-  String e2 = null;
-  Token r = null;
-  ConditionValue cValue = new ConditionValue();
-}
-{
-  (
-    e1 = Expression()
-  )?
-  (
-    r = Rop() e2 = Expression()
-  )?
-  {
-    if (r == null || e1 == null)
-    {
-      if (e1 == null)
-      {
-        QTInfo qtInfo = new QTInfo("jnz", "_", "_", "T");
-        qtList.addQTInfo(qtInfo);
-        cValue.mergeTrue(qtInfo);
-      }
-      else
-      {
-        QTInfo qtInfo = new QTInfo("jnz", e1, "_", "T");
-        qtList.addQTInfo(qtInfo);
-        cValue.mergeTrue(qtInfo);
-      }
-    }
-    else
-    {
-      QTInfo qtInfo = new QTInfo("j" + r.image, e1, e2, "T");
-      qtList.addQTInfo(qtInfo);
-      cValue.mergeTrue(qtInfo);
-    }
-    QTInfo qtInfo = new QTInfo("j", "_", "_", "F");
-    qtList.addQTInfo(qtInfo);
-    cValue.mergeFalse(qtInfo);
-  }
-  {
-    return cValue;
   }
 }
 
@@ -824,7 +888,7 @@ void DoWhileStatement() :
   )
   < WHILE >
   < LEFT_PAREN >
-  Value = parseCondition()
+  Value = ORExpression()
   < RIGHT_PAREN >
   < SEMICOLON >
   {
@@ -850,7 +914,7 @@ void ForStatement() :
   | AssignmentSentence2()
   )?
   < SEMICOLON >
-  cValue = parseCondition()
+  cValue = RelationExpression()
   < SEMICOLON >
   (
     AssignmentSentence2()

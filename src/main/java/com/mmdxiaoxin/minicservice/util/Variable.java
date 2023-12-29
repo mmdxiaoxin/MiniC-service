@@ -1,11 +1,8 @@
 package com.mmdxiaoxin.minicservice.util;
 
-import com.mmdxiaoxin.minicservice.parser.Token;
-import lombok.Data;
 
-import java.util.ArrayList;
-
-@Data
+import parser.Token;
+import java.util.Objects;
 public class Variable {
 
 	private String type;
@@ -13,8 +10,6 @@ public class Variable {
 	private int line;
 	private int column;
 	private int elementSize;
-	private ArrayInfo arrayInfo = null;
-	private ArrayList<Integer> arrayInfoVar = null;
 
 	public Variable() {
 
@@ -32,44 +27,66 @@ public class Variable {
 		this.column = token.endColumn;
 	}
 
+	public String getType() {
+		return this.type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	public int getLine() {
+		return this.line;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	public int getColumn() {
+		return this.column;
+	}
+
+	public void setElementSize(int size) {
+		this.elementSize = size;
+	}
+
+	public int getElementSize() {
+		return elementSize;
+	}
+	
+	public void printInfo() {
+		System.out.println("new Variable:" + toString());
+	}
+	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		return Objects.hash(name);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Variable other = (Variable) obj;
-		if (name == null) {
-            return other.name == null;
-		} else return name.equals(other.name);
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Variable variable = (Variable) obj;
+		return Objects.equals(name, variable.name);
     }
 
+	@Override
 	public String toString() {
-		String str = null;
-		if (this.arrayInfo == null) {
-			str = this.type + " " + this.name;
-		} else {
-			str = this.type + " " + this.name + this.arrayInfo;
-		}
-		return str;
+		return this.type + " " + this.name;
 	}
 
-	public boolean checkDemen(ArrayList<Integer> intList) {
-		boolean flag = false;
-		if (this.arrayInfo.checkArray(intList))
-			flag = true;
-		else
-			System.out.println("数组" + this.name + "下标异常");
-		return flag;
-	}
 }
