@@ -52,165 +52,97 @@ java -jar target/your-application.jar
 
 ```bash
 .
-│  .gitignore
-│  input5.txt
-│  mvnw
-│  mvnw.cmd
-│  output5.txt
-│  pom.xml
+│  MiniCServiceApplication.java
 │
-├─.idea
-│  │  .gitignore
-│  │  compiler.xml
-│  │  dataSources.local.xml
-│  │  dataSources.xml
-│  │  encodings.xml
-│  │  jarRepositories.xml
-│  │  misc.xml
-│  │  uiDesigner.xml
-│  │  vcs.xml
-│  │  workspace.xml
-│  │
-│  ├─dataSources
-│  │  │  e4d71c56-0114-480a-b79e-9d287db88137.xml
-│  │  │
-│  │  └─e4d71c56-0114-480a-b79e-9d287db88137
-│  │      └─storage_v2
-│  │          └─_src_
-│  │              └─schema
-│  │                      information_schema.FNRwLQ.meta
-│  │                      miniparser.NoMx7Q.meta
-│  │                      mysql.osA4Bg.meta
-│  │                      performance_schema.kIw0nw.meta
-│  │                      sys.zb4BAA.meta
-│  │
-│  └─httpRequests
-│          http-client.cookies
-│          http-requests-log.http
+├─api
+│      CommonResult.java
+│      IErrorCode.java
+│      ResultCode.java
 │
-├─.mvn
-│  └─wrapper
-│          maven-wrapper.jar
-│          maven-wrapper.properties
+├─config
+├─controller
+│      MiniCParserController.java
 │
-├─src
-│  ├─main
-│  │  ├─java
-│  │  │  └─com
-│  │  │      └─mmdxiaoxin
-│  │  │          └─minicservice
-│  │  │              │  MiniCServiceApplication.java
-│  │  │              │
-│  │  │              ├─api
-│  │  │              │      CommonResult.java
-│  │  │              │      IErrorCode.java
-│  │  │              │      ResultCode.java
-│  │  │              │
-│  │  │              ├─config
-│  │  │              ├─controller
-│  │  │              │      MiniCParserController.java
-│  │  │              │
-│  │  │              ├─parser
-│  │  │              │      JJTMiniCParserState.java
-│  │  │              │      MiniCParser.java
-│  │  │              │      MiniCParser.jj
-│  │  │              │      MiniCParser.jjt
-│  │  │              │      MiniCParserConstants.java
-│  │  │              │      MiniCParserTokenManager.java
-│  │  │              │      MiniCParserTreeConstants.java
-│  │  │              │      Node.java
-│  │  │              │      ParseException.java
-│  │  │              │      SimpleCharStream.java
-│  │  │              │      SimpleNode.java
-│  │  │              │      Token.java
-│  │  │              │      TokenMgrError.java
-│  │  │              │
-│  │  │              ├─service
-│  │  │              │      MiniCService.java
-│  │  │              │
-│  │  │              └─util
-│  │  │                      ArrayInfo.java
-│  │  │                      ConditionValue.java
-│  │  │                      QTInfo.java
-│  │  │                      QTList.java
-│  │  │                      QTTable.java
-│  │  │                      StatementType.java
-│  │  │                      Variable.java
-│  │  │                      VariableNameGenerator.java
-│  │  │                      VariableTable.java
-│  │  │
-│  │  └─resources
-│  │      │  application.properties
-│  │      │
-│  │      ├─static
-│  │      └─templates
-│  │              index.html
-│  │              parser.html
-│  │
-│  └─test
-│      └─java
-│          └─com
-│              └─mmdxiaoxin
-│                  └─minicservice
-│                          MiniCServiceApplicationTests.java
+├─parser
+│      JJTMiniCParserState.java
+│      MiniCParser.java
+│      MiniCParser.jj
+│      MiniCParser.jjt
+│      MiniCParserConstants.java
+│      MiniCParserTokenManager.java
+│      MiniCParserTreeConstants.java
+│      Node.java
+│      ParseException.java
+│      SimpleCharStream.java
+│      SimpleNode.java
+│      Token.java
+│      TokenMgrError.java
 │
-└─target
-    ├─classes
-    │  │  application.properties
-    │  │
-    │  ├─com
-    │  │  └─mmdxiaoxin
-    │  │      └─minicservice
-    │  │          │  MiniCServiceApplication.class
-    │  │          │
-    │  │          ├─api
-    │  │          │      CommonResult.class
-    │  │          │      IErrorCode.class
-    │  │          │      ResultCode.class
-    │  │          │
-    │  │          ├─controller
-    │  │          │      MiniCParserController.class
-    │  │          │
-    │  │          ├─parser
-    │  │          │      JJTMiniCParserState.class
-    │  │          │      MiniCParser.class
-    │  │          │      MiniCParserConstants.class
-    │  │          │      MiniCParserTokenManager.class
-    │  │          │      MiniCParserTreeConstants.class
-    │  │          │      Node.class
-    │  │          │      ParseException.class
-    │  │          │      SimpleCharStream.class
-    │  │          │      SimpleNode.class
-    │  │          │      Token.class
-    │  │          │      TokenMgrError.class
-    │  │          │
-    │  │          ├─service
-    │  │          │      MiniCService.class
-    │  │          │
-    │  │          └─util
-    │  │                  ArrayInfo.class
-    │  │                  ConditionValue.class
-    │  │                  QTInfo.class
-    │  │                  QTList.class
-    │  │                  QTTable.class
-    │  │                  StatementType.class
-    │  │                  Variable.class
-    │  │                  VariableNameGenerator.class
-    │  │                  VariableTable.class
-    │  │
-    │  └─templates
-    │          index.html
-    │          parser.html
-    │
-    ├─generated-sources
-    │  └─annotations
-    ├─generated-test-sources
-    │  └─test-annotations
-    └─test-classes
-        └─com
-            └─mmdxiaoxin
-                └─minicservice
-                        MiniCServiceApplicationTests.class
+├─service
+│      MiniCService.java
+│
+└─util
+        ConditionValue.java
+        QTInfo.java
+        QTList.java
+        Variable.java
+        VariableNameGenerator.java
+        VariableTable.java
 ```
 
-请注意，项目的主要结构包括源代码（src目录）、资源文件（resources目录）、测试代码（test目录）、以及构建和编译生成的文件（target目录）。前端页面位于`src/main/resources/templates`目录下。
+
+
+### 项目截图
+
+![web](.\README.assets\web.png)
+
+### 文法规则
+
+| Start                    | ::=  | [Program](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod2) |
+| ------------------------ | ---- | ------------------------------------------------------------ |
+| Program                  | ::=  | ( <VOID> \| <INT> ) <MAIN> <LEFT_PAREN> <RIGHT_PAREN> <LEFT_BRACE> ( [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) )* <RIGHT_BRACE> |
+| TypeSpecifier            | ::=  | <INT>                                                        |
+|                          | \|   | <DOUBLE>                                                     |
+|                          | \|   | <VOID>                                                       |
+|                          | \|   | <FLOAT>                                                      |
+|                          | \|   | <CHAR>                                                       |
+|                          | \|   | <LONG>                                                       |
+|                          | \|   | <SHORT>                                                      |
+| StatementBlock           | ::=  | [Statement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod5) |
+|                          | \|   | <LEFT_BRACE> ( [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) )* <RIGHT_BRACE> |
+| Statement                | ::=  | [SequenceStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod6) |
+|                          | \|   | [ConditionStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod7) |
+|                          | \|   | [WhileStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod8) |
+|                          | \|   | [DoWhileStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod9) |
+|                          | \|   | [SwitchCStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod10) |
+|                          | \|   | [ForStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod11) |
+| SequenceStatement        | ::=  | [DeclarationStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod12) <SEMICOLON> |
+|                          | \|   | [AssignmentStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod13) <SEMICOLON> |
+|                          | \|   | [ReturnStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod14) <SEMICOLON> |
+|                          | \|   | [SelfIncreasing](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod15) <SEMICOLON> |
+| ReturnStatement          | ::=  | <RETURN> [Expression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod16) |
+| DeclarationStatement     | ::=  | [TypeSpecifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod4) [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) ( <COMMA> [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) )* |
+| AssignmentStatement      | ::=  | [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) <ASSIGN> [Expression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod16) |
+| ORExpression             | ::=  | [ANDExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod19) ( "\|\|" [ANDExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod19) )* |
+| ANDExpression            | ::=  | [NOTExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod20) ( <AND> [NOTExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod20) )* |
+| NOTExpression            | ::=  | ( <NOT> )? [RelationExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod21) |
+| RelationExpression       | ::=  | [Expression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod16) ( [Rop](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod22) [Expression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod16) )? |
+| ConditionStatement       | ::=  | <IF> <LEFT_PAREN> [ORExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod18) <RIGHT_PAREN> [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) ( <ELSE> [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) )? |
+| WhileStatement           | ::=  | <WHILE> <LEFT_PAREN> [ORExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod18) <RIGHT_PAREN> [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) |
+| Rop                      | ::=  | <LESS_THAN>                                                  |
+|                          | \|   | <LESS_THAN_EQUAL>                                            |
+|                          | \|   | <GREATER_THAN>                                               |
+|                          | \|   | <GREATER_THAN_EQUAL>                                         |
+| Expression               | ::=  | [AdditiveExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod23) |
+| AdditiveExpression       | ::=  | [MultiplicativeExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod24) ( ( "+" \| "-" ) [MultiplicativeExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod24) )* |
+| MultiplicativeExpression | ::=  | [UnaryExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod25) ( ( "*" \| "/" \| "%" ) [UnaryExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod25) )* |
+| UnaryExpression          | ::=  | ( <LEFT_PAREN> [Expression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod16) <RIGHT_PAREN> \| [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) \| [parseInteger](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod26) ) |
+| parseIdentifier          | ::=  | <IDENTIFIER>                                                 |
+| parseInteger             | ::=  | <INTEGER_LITERAL>                                            |
+| SwitchCStatement         | ::=  | <SWITCH> <LEFT_PAREN> [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) <RIGHT_PAREN> <LEFT_BRACE> ( <CASE> <INTEGER_LITERAL> <COLON> [CaseStatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod27) )* ( <DFLT> <COLON> ( [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) )? <BREAK> <SEMICOLON> )? <RIGHT_BRACE> |
+| CaseStatementBlock       | ::=  | [Statement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod5) <BREAK> <SEMICOLON> |
+|                          | \|   | <LEFT_BRACE> ( [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) <BREAK> <SEMICOLON> )* <RIGHT_BRACE> |
+| DoWhileStatement         | ::=  | <DO> ( [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) ) <WHILE> <LEFT_PAREN> [ORExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod18) <RIGHT_PAREN> <SEMICOLON> |
+| ForStatement             | ::=  | <FOR> <LEFT_PAREN> ( [DeclarationStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod12) \| [AssignmentStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod13) )? <SEMICOLON> [RelationExpression](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod21) <SEMICOLON> ( [SelfIncreasing](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod15) \| [AssignmentStatement](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod13) )* <RIGHT_PAREN> [StatementBlock](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod3) |
+| SelfIncreasing           | ::=  | ( [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) ( <INCREMENT> \| <DECREMENT> ) ) |
+|                          | \|   | ( ( <INCREMENT> \| <DECREMENT> ) [parseIdentifier](file:///D:/mycode/JAVA/eclipse-2019/MiniC_compiler/MiniCParser.html#prod17) ) |
