@@ -22,19 +22,6 @@ public class VariableTable {
 		return result;
 	}
 
-	public void addWithCheck(VariableTable varTable) {
-		if (varTable != null && varTable.variableList != null) {
-			if (variableList == null)
-				variableList = varTable.variableList;
-			else {
-				for (int i = 0; i < varTable.variableList.size(); i++) {
-					Variable variable = varTable.variableList.get(i);
-					addWithCheck(variable);
-				}
-			}
-		}
-	}
-
 	public void remove(Variable info) {
 		for (int i = variableList.size() - 1; i >= 0; i--) {
 			if (info.getName().equals(variableList.get(i).getName())) {
@@ -55,10 +42,6 @@ public class VariableTable {
 		removeAll(varTable.variableList);
 	}
 
-	public void clear() {
-		variableList.clear();
-	}
-
 	public void add(VariableTable varTable) {
 		if (varTable != null) {
 			for (int i = 0; i < varTable.size(); i++) {
@@ -70,22 +53,6 @@ public class VariableTable {
 
 	private Variable get(int i) {
 		return variableList.get(i);
-	}
-
-	public void printAll() {
-        for (Variable variable : variableList) System.out.print(variable.getName() + "  ");
-		System.out.println("---------");
-	}
-
-	public Variable variableExist(Variable info) {
-		Variable infoP = null;
-		for (int i = variableList.size() - 1; i >= 0; i--) {
-			if (variableList.get(i).getName().equals(info.getName())) {
-				infoP = variableList.get(i);
-				break;
-			}
-		}
-		return infoP;
 	}
 
 	public Variable variableExist(String name) {

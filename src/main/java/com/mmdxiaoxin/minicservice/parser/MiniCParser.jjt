@@ -13,12 +13,15 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class MiniCParser
 {
   public QTList qtList = new QTList();
 
   public VariableTable variableTable = new VariableTable();
+
+  public ArrayList < String > errorList = new ArrayList < String > ();
 
   public void printQTTable(char [] buffer, FileWriter fos)
   {
@@ -30,6 +33,7 @@ public class MiniCParser
     {
       System.out.println("Oops.");
       System.out.println(e.getMessage());
+      errorList.add(e.getMessage());
     }
   }
 
@@ -37,61 +41,6 @@ public class MiniCParser
   {
     System.out.println(qtList.printQTTable());
     return qtList.printQTTable();
-  }
-
-  public Map < String, String > processing(String code)
-  {
-    Map < String, String > result = new HashMap < String, String > ();
-    InputStream lexicalStream = new ByteArrayInputStream(code.getBytes());
-    InputStream syntaxStream = new ByteArrayInputStream(code.getBytes());
-    try
-    {
-      // 词法分析
-      SimpleCharStream stream = new SimpleCharStream(lexicalStream);
-      MiniCParserTokenManager tokenManager = new MiniCParserTokenManager(stream);
-      StringBuilder lexicalResult = new StringBuilder();
-      Token token = tokenManager.getNextToken();
-      int index = 0;
-      while (token.kind != 0)
-      {
-        lexicalResult.append(++index).append(": ").append("(").append(token.kind).append(", ").append(token.image).append(")\n");
-        token = tokenManager.getNextToken();
-      }
-      result.put("lexicalAnalysis", lexicalResult.toString());
-      // 语法分析
-      StringBuilder syntaxResult = new StringBuilder();
-      MiniCParser miniCParser = new MiniCParser(syntaxStream);
-      SimpleNode n = miniCParser.Start();
-      syntaxResult.append(n.dump("->"));
-      syntaxResult.append("\u8c22\u8c22\u3002\n\n");
-      result.put("syntaxAnalysis", syntaxResult.toString());
-      // 语义分析
-      StringBuilder semanticResult = new StringBuilder();
-      semanticResult.append(miniCParser.printQTTable());
-      result.put("semanticAnalysis", semanticResult.toString());
-    }
-    catch (ParseException e)
-    {
-      result.put("syntaxAnalysis", "\u8bed\u6cd5\u5206\u6790\u9519\u8bef\uff1a" + e.getMessage());
-    }
-    finally
-    {
-      closeStream(lexicalStream);
-      closeStream(syntaxStream);
-    }
-    return result;
-  }
-
-  private void closeStream(InputStream stream)
-  {
-    try
-    {
-      stream.close();
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace(); // 处理关闭流时的异常
-    }
   }
 
   public static void main(String args [])
@@ -445,14 +394,14 @@ void DeclarationStatement() :
   identifierToken = parseIdentifier()
   {
     variableEntry = new Variable(ty, identifierToken);
-    variableTable.addWithCheck(variableEntry);
+    errorList.add(variableTable.addWithCheck(variableEntry));
   }
   (
     < COMMA >
     identifierToken = parseIdentifier()
     {
       variableEntry = new Variable(ty, identifierToken);
-      variableTable.addWithCheck(variableEntry);
+      errorList.add(variableTable.addWithCheck(variableEntry));
     }
   )*
 }
@@ -474,9 +423,10 @@ void AssignmentStatement() :
     if (variableEntry == null)
     {
       System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
+      errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
     }
   }
-  assignmentOperator = "="
+  assignmentOperator = < ASSIGN >
   str2 = Expression()
   {
     QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
@@ -501,9 +451,10 @@ void AssignmentSentence2() :
     if (variableEntry == null)
     {
       System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
+      errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
     }
   }
-  assignmentOperator = "="
+  assignmentOperator = < ASSIGN >
   str2 = Expression()
   {
     QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
@@ -785,6 +736,7 @@ String UnaryExpression() :
       if (variableEntry == null)
       {
         System.out.println("\u53d8\u91cf" + str + "\u672a\u5b9a\u4e49");
+        errorList.add("\u53d8\u91cf" + str + "\u672a\u5b9a\u4e49");
       }
     }
   | str = parseInteger()
@@ -819,8 +771,6 @@ String parseInteger() :
 void SwitchCStatement() :
 {
   ConditionValue Value = new ConditionValue();
-  String str1 = null;
-  String str2 = null;
   int qtSize = QTInfo.size;
   Token tok;
   Token tokx;
@@ -854,11 +804,7 @@ void SwitchCStatement() :
       Value.backpatchFalseChain(QTInfo.size + 2);
     }
     < COLON >
-    (
-      StatementBlock()
-    )*
-    < BREAK >
-    < SEMICOLON >
+    CaseStatementBlock()
   )*
   [
     < DFLT > < COLON >
@@ -866,6 +812,21 @@ void SwitchCStatement() :
     < BREAK >
     < SEMICOLON >
   ]
+  < RIGHT_BRACE >
+}
+
+void CaseStatementBlock():
+{}
+{
+  Statement()
+  < BREAK >
+  < SEMICOLON >
+| < LEFT_BRACE >
+  (
+    StatementBlock()
+    < BREAK >
+    < SEMICOLON >
+  )*
   < RIGHT_BRACE >
 }
 
@@ -947,6 +908,7 @@ void SelfIncreasing() :
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+		errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
     }
     (
@@ -973,6 +935,7 @@ void SelfIncreasing() :
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+		errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
     }
     {

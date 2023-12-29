@@ -28,9 +28,10 @@ public interface MiniCParserTreeConstants
   public int JJTPARSEIDENTIFIER = 22;
   public int JJTPARSEINTEGER = 23;
   public int JJTSWITCHCSTATEMENT = 24;
-  public int JJTDOWHILESTATEMENT = 25;
-  public int JJTFORSTATEMENT = 26;
-  public int JJTSELFINCREASING = 27;
+  public int JJTCASESTATEMENTBLOCK = 25;
+  public int JJTDOWHILESTATEMENT = 26;
+  public int JJTFORSTATEMENT = 27;
+  public int JJTSELFINCREASING = 28;
 
 
   public String[] jjtNodeName = {
@@ -59,9 +60,10 @@ public interface MiniCParserTreeConstants
     "parseIdentifier",
     "parseInteger",
     "SwitchCStatement",
+    "CaseStatementBlock",
     "DoWhileStatement",
     "ForStatement",
     "SelfIncreasing",
   };
 }
-/* JavaCC - OriginalChecksum=fa0afa9e0a29b7b3386fbca1ef9ba64e (do not edit this line) */
+/* JavaCC - OriginalChecksum=5855a65229e995559d99edf63b2f0b4a (do not edit this line) */
