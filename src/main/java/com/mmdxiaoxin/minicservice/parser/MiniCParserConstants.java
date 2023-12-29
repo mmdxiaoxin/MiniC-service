@@ -157,19 +157,11 @@ public interface MiniCParserConstants {
   /** RegularExpression Id. */
   int OCTAL_LITERAL = 79;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 80;
+  int IDENTIFIER = 80;
   /** RegularExpression Id. */
-  int EXPONENT = 81;
+  int LETTER = 81;
   /** RegularExpression Id. */
-  int CHARACTER_LITERAL = 82;
-  /** RegularExpression Id. */
-  int STRING_LITERAL = 83;
-  /** RegularExpression Id. */
-  int IDENTIFIER = 84;
-  /** RegularExpression Id. */
-  int LETTER = 85;
-  /** RegularExpression Id. */
-  int DIGIT = 86;
+  int DIGIT = 82;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -256,10 +248,6 @@ public interface MiniCParserConstants {
     "<DECIMAL_LITERAL>",
     "<HEX_LITERAL>",
     "<OCTAL_LITERAL>",
-    "<FLOATING_POINT_LITERAL>",
-    "<EXPONENT>",
-    "<CHARACTER_LITERAL>",
-    "<STRING_LITERAL>",
     "<IDENTIFIER>",
     "<LETTER>",
     "<DIGIT>",

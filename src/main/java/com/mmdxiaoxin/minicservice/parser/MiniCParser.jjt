@@ -216,41 +216,6 @@ TOKEN : /* 特殊常量 */
 | < #DECIMAL_LITERAL : [ "1"-"9" ] ([ "0"-"9" ])* >
 | < #HEX_LITERAL : "0" [ "x", "X" ] ([ "0"-"9", "a"-"f", "A"-"F" ])+ >
 | < #OCTAL_LITERAL : "0" ([ "0"-"7" ])* >
-| < FLOATING_POINT_LITERAL :
-    ([ "0"-"9" ])+ "." ([ "0"-"9" ])* (< EXPONENT >)? ([ "f", "F", "d", "D" ])?
-  | "." ([ "0"-"9" ])+ (< EXPONENT >)? ([ "f", "F", "d", "D" ])?
-  | ([ "0"-"9" ])+ < EXPONENT > ([ "f", "F", "d", "D" ])?
-  | ([ "0"-"9" ])+ (< EXPONENT >)? [ "f", "F", "d", "D" ] >
-| < #EXPONENT : [ "e", "E" ] ([ "+", "-" ])? ([ "0"-"9" ])+ >
-| < CHARACTER_LITERAL :
-    "\'"
-    (
-      ~[ "\'", "\\", "\n", "\r" ]
-    | "\\"
-      (
-        [ "n", "t", "b", "r", "f", "\\", "\'", "\"" ]
-      | [ "0"-"7" ] ([ "0"-"7" ])?
-      | [ "0"-"3" ] [ "0"-"7" ] [ "0"-"7" ]
-      )
-    )
-    "\'" >
-| < STRING_LITERAL :
-    "\""
-    (
-      ~[ "\"", "\\", "\n", "\r" ]
-    | "\\"
-      (
-        [ "n", "t", "b", "r", "f", "\\", "\'", "\"" ]
-      | [ "0"-"7" ] ([ "0"-"7" ])?
-      | [ "0"-"3" ] [ "0"-"7" ] [ "0"-"7" ]
-      |
-        (
-          [ "\n", "\r" ]
-        | "\r\n"
-        )
-      )
-    )*
-    "\"" >
 }
 
 TOKEN : /* 标识符 (IDENTIFIERS) */
@@ -278,33 +243,11 @@ void Program() :
 {}
 {
   (
-    LOOKAHEAD(2)
-    FunctionSatement()
-  )*
-  (
     < VOID >
   | < INT >
   )
-  < MAIN >
-  < LEFT_PAREN > < RIGHT_PAREN >
-  < LEFT_BRACE >
-  (
-    StatementBlock()
-  )*
-  < RIGHT_BRACE >
-}
-
-void FunctionSatement() :
-{}
-{
-  TypeSpecifier() parseIdentifier() < LEFT_PAREN >
-  (
-    TypeSpecifier() parseIdentifier()
-    (
-      "," TypeSpecifier() parseIdentifier()
-    )*
-  )?
-  < RIGHT_PAREN >
+  < MAIN > 
+  < LEFT_PAREN > < RIGHT_PAREN > 
   < LEFT_BRACE >
   (
     StatementBlock()
@@ -373,8 +316,11 @@ void SequenceStatement() :
 {}
 {
   DeclarationStatement() < SEMICOLON >
-| AssignmentStatement() < SEMICOLON >
+| LOOKAHEAD(2)
+  AssignmentStatement() < SEMICOLON >
 | ReturnStatement() < SEMICOLON >
+| LOOKAHEAD(2)
+  SelfIncreasing() < SEMICOLON >
 }
 
 void ReturnStatement() :
@@ -390,14 +336,14 @@ void DeclarationStatement() :
   String ty = null;
 }
 {
-  ty = TypeSpecifier()
+  ty = TypeSpecifier() 
   identifierToken = parseIdentifier()
   {
     variableEntry = new Variable(ty, identifierToken);
     errorList.add(variableTable.addWithCheck(variableEntry));
   }
   (
-    < COMMA >
+    < COMMA > 
     identifierToken = parseIdentifier()
     {
       variableEntry = new Variable(ty, identifierToken);
@@ -426,35 +372,7 @@ void AssignmentStatement() :
       errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
     }
   }
-  assignmentOperator = < ASSIGN >
-  str2 = Expression()
-  {
-    QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
-    qtList.addQTInfo(qt);
-  }
-}
-
-void AssignmentSentence2() :
-{
-  String str2 = null;
-  String str1 = null;
-  Token assignmentOperator, identifierToken;
-  Variable variableEntry = new Variable();
-}
-{
-  identifierToken = parseIdentifier()
-  {
-    str1 = identifierToken.image;
-  }
-  {
-    variableEntry = variableTable.variableExist(str1);
-    if (variableEntry == null)
-    {
-      System.out.println("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
-      errorList.add("\u53d8\u91cf" + str1 + "\u672a\u5b9a\u4e49");
-    }
-  }
-  assignmentOperator = < ASSIGN >
+  assignmentOperator = < ASSIGN > 
   str2 = Expression()
   {
     QTInfo qt = new QTInfo(assignmentOperator.image, str2, "_", str1);
@@ -521,11 +439,11 @@ ConditionValue NOTExpression() :
   boolean flag = true;
 }
 {
-  ("!"
+  (< NOT >
   {
     flag = false;
   }
-  )?
+  )? 
   c1 = RelationExpression()
   {
     if (!flag)
@@ -547,7 +465,7 @@ ConditionValue RelationExpression() :
 {
   e1 = Expression()
   (
-    rop = Rop()
+    rop = Rop() 
     e2 = Expression()
   )?
   {
@@ -583,9 +501,6 @@ void ConditionStatement() :
     cValue.backpatchTrueChain(QTInfo.size + 1);
   }
   StatementBlock()
-  {
-    cValue.backpatchFalseChain(QTInfo.size + 1);
-  }
   (
     LOOKAHEAD(1)
     < ELSE >
@@ -601,6 +516,9 @@ void ConditionStatement() :
       qtInfo.setResult(QTInfo.size + 1);
     }
   )?
+  {
+    cValue.backpatchFalseChain(QTInfo.size + 1);
+  }
 }
 
 void WhileStatement() :
@@ -776,13 +694,13 @@ void SwitchCStatement() :
   Token tokx;
 }
 {
-  < SWITCH >
-  < LEFT_PAREN >
-  tok = parseIdentifier()
-  < RIGHT_PAREN >
+  < SWITCH > 
+  < LEFT_PAREN > 
+  tok = parseIdentifier() 
+  < RIGHT_PAREN > 
   < LEFT_BRACE >
   (
-    < CASE >
+    < CASE > 
     tokx = < INTEGER_LITERAL >
     {
       QTInfo qt1;
@@ -791,25 +709,26 @@ void SwitchCStatement() :
         qt1 = new QTInfo("case", tok.image, tokx.image, QTInfo.size + 3);
         qtList.addQTInfo(qt1);
         Value.backpatchFalseChain(QTInfo.size);
-        Value = new ConditionValue();
       }
       else
       {
-        qt1 = new QTInfo("Jnz", tok.image, "_", QTInfo.size + 3);
+        qt1 = new QTInfo("jnz", tok.image, "_", QTInfo.size + 3);
         qtList.addQTInfo(qt1);
       }
-      QTInfo qt2 = new QTInfo("J", "_", "_", "F");
+    }
+    < COLON >
+    CaseStatementBlock()
+    {
+      QTInfo qt2 = new QTInfo("j", "_", "_", "F");
       qtList.addQTInfo(qt2);
       Value.mergeFalse(qt2);
       Value.backpatchFalseChain(QTInfo.size + 2);
     }
-    < COLON >
-    CaseStatementBlock()
   )*
   [
-    < DFLT > < COLON >
-    [ StatementBlock() ]
-    < BREAK >
+    < DFLT > < COLON > 
+    [ StatementBlock() ] 
+    < BREAK > 
     < SEMICOLON >
   ]
   < RIGHT_BRACE >
@@ -843,10 +762,10 @@ void DoWhileStatement() :
   (
     StatementBlock()
   )
-  < WHILE >
-  < LEFT_PAREN >
-  Value = ORExpression()
-  < RIGHT_PAREN >
+  < WHILE > 
+  < LEFT_PAREN > 
+  Value = ORExpression() 
+  < RIGHT_PAREN > 
   < SEMICOLON >
   {
     Value.backpatchTrueChain(QTSize + 1);
@@ -868,19 +787,19 @@ void ForStatement() :
   }
   (
     DeclarationStatement()
-  | AssignmentSentence2()
+  | AssignmentStatement()
   )?
-  < SEMICOLON >
-  cValue = RelationExpression()
+  < SEMICOLON > 
+  cValue = RelationExpression() 
   < SEMICOLON >
   (
     LOOKAHEAD(2)
     SelfIncreasing()
     {
-      qtList.addQTInfo(new QTInfo("J", "_", "_", index));
+      qtList.addQTInfo(new QTInfo("j", "_", "_", index));
     }
-  |
-    AssignmentSentence2()
+  | 
+    AssignmentStatement()
   )*
   < RIGHT_PAREN >
   {
@@ -908,7 +827,7 @@ void SelfIncreasing() :
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
-		errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+        errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
     }
     (
@@ -928,14 +847,16 @@ void SelfIncreasing() :
   )
 |
   (
-    op = < INCREMENT >
-  | op = < DECREMENT >
+    (
+      op = < INCREMENT >
+    | op = < DECREMENT >
+    )
     id = parseIdentifier()
     {
       if (variableTable.variableExist(id.image) == variableEntry)
       {
         System.out.println("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
-		errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
+        errorList.add("\u53d8\u91cf" + id.image + "\u672a\u5b9a\u4e49,\u9519\u8bef\u5728" + id.endLine + "\u884c," + id.endColumn + "\u5217");
       }
     }
     {
