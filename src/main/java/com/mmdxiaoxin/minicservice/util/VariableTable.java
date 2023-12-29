@@ -10,7 +10,7 @@ public class VariableTable {
 	}
 
 	public void addWithCheck(Variable variable) {
-		if (variableList.contains(variable)) { // api 方法
+		if (variableList.contains(variable)) {
 			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
 					+ variable.getLine() + "," + variable.getColumn() + "]");
 		} else {
@@ -65,7 +65,6 @@ public class VariableTable {
 	}
 
 	private Variable get(int i) {
-		// TODO Auto-generated method stub
 		return variableList.get(i);
 	}
 

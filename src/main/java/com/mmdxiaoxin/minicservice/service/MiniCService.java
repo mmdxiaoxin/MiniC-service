@@ -1,6 +1,7 @@
 package com.mmdxiaoxin.minicservice.service;
 
 import com.mmdxiaoxin.minicservice.parser.*;
+import com.mmdxiaoxin.minicservice.util.QTInfo;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,9 @@ public class MiniCService {
         } finally {
             closeStream(lexicalStream);
             closeStream(syntaxStream);
+            QTInfo.innerIdSeqen = 0;
+            QTInfo.size = 0;
+            QTInfo.START = 0;
         }
         return result;
     }
@@ -62,5 +66,4 @@ public class MiniCService {
             e.printStackTrace(); // 处理关闭流时的异常
         }
     }
-
 }
