@@ -10,7 +10,7 @@ public class VariableTable {
 	}
 
 	public void addWithCheck(Variable variable) {
-		if (variableList.contains(variable)) { // api ����
+		if (variableList.contains(variable)) { // api 方法
 			System.out.println("\u53d8\u91cf\u4e0d\u80fd\u91cd\u590d\u5b9a\u4e49\uff01 " + variable.getName() + " ["
 					+ variable.getLine() + "," + variable.getColumn() + "]");
 		} else {
@@ -76,7 +76,7 @@ public class VariableTable {
 		System.out.println("---------");
 	}
 
-	// �������Ѷ���ı������򷵻ظñ������ã����򷵻�null
+	// 若含有已定义的变量，则返回该变量引用，否则返回null
 	public Variable variableExist(Variable info) {
 		Variable infoP = null;
 		for (int i = variableList.size() - 1; i >= 0; i--) {
@@ -99,3 +99,4 @@ public class VariableTable {
 		return infoP;
 	}
 }
+

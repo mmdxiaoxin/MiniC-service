@@ -1,11 +1,11 @@
 package com.mmdxiaoxin.minicservice.util;
 
-//������Ԫʽ����Ϣ
+//定义四元式的信息
 public class QTInfo {
 	public static int START = 0;
-	public static int innerIdSeqen = START; // ��Ԫʽȫ�ָ���
-	public static int size = 0; // ��Ԫʽȫ�ָ���
-	private int innerId; // ��ǰ��ԪʽID
+	public static int innerIdSeqen = START; // 四元式全局个数
+	public static int size = 0; // 四元式全局个数
+	private int innerId; // 当前四元式ID
 	private String operator;
 	private String arg1;
 	private String arg2;

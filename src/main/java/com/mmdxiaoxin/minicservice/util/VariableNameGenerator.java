@@ -1,11 +1,11 @@
 package com.mmdxiaoxin.minicservice.util;
 
 /**
- * ������������
- * 
+ * 变量名产生器
+ *
  */
 public class VariableNameGenerator {
-	// ���
+	// 序号
 	public static int sequenceId = 0;
 	private static final String VAR_PREFIX = "T";
 
