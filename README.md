@@ -94,7 +94,7 @@ java -jar target/your-application.jar
 
 ### 项目截图
 
-![web](.\README.assets\web.png)
+![web](https://github.com/mmdxiaoxin/MiniC-service/blob/master/README.assets/web.png)
 
 ### 文法规则
 
